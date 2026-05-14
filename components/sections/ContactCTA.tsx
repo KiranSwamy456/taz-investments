@@ -1,22 +1,14 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 export function ContactCTA() {
   return (
-    <section id="contact" className="py-24 px-6 md:px-12 bg-background border-t border-border">
+    <section id="contact" data-scroll-tone className="py-24 px-6 md:px-12 bg-background border-t border-border">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-card rounded-[2rem] p-12 md:p-24 border border-border flex flex-col md:flex-row items-center justify-between gap-12 group cursor-pointer hover:border-accent/50 transition-colors duration-500"
-        >
+        <div className="bg-card rounded-[2rem] p-12 md:p-24 border border-border flex flex-col md:flex-row items-center justify-between gap-12 group cursor-pointer hover:border-accent/50 transition-colors duration-500">
           <div className="flex-1">
-            <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8 block">WORK WITH US</span>
+            <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8 block">START A ROUND</span>
             <h2 className="text-5xl md:text-7xl lg:text-[8vw] font-display font-medium leading-[0.9] tracking-tight group-hover:text-accent transition-colors duration-500">
-              Get in touch.
+              Raise with us.
             </h2>
           </div>
 
@@ -25,7 +17,7 @@ export function ContactCTA() {
               <ArrowRight className="w-8 h-8 md:w-12 md:h-12 transform -rotate-45 group-hover:rotate-0 transition-transform duration-500" />
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

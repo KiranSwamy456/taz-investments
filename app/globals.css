@@ -86,3 +86,189 @@
     @apply font-sans antialiased bg-background text-foreground selection:bg-accent selection:text-white;
   }
 }
+
+/* Per-section: --section-text-fill 0→1 (ScrollCopyOpacity). Block copy uses fixed gradient = one left→right sweep across wraps. */
+main > section[data-scroll-tone],
+.min-h-screen > footer {
+  --section-text-fill: 0;
+}
+
+/* Left → right white: edge at calc(fill * 100vw); fixed attachment aligns all glyphs in the section */
+main > section[data-scroll-tone]
+  :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    figcaption,
+    label,
+    th,
+    td,
+    dt,
+    dd,
+    address,
+    summary,
+    caption,
+    time,
+    kbd,
+    samp,
+    var,
+    pre,
+    code
+  ),
+main > section[data-scroll-tone] li:not(:has(> a)),
+main > section[data-scroll-tone] span:not(:is(h1, h2, h3, h4, h5, h6) *):not(:has(span)),
+main > section[data-scroll-tone] [data-scroll-link-text],
+main > section[data-scroll-tone] [data-scroll-text-block] {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    hsl(0 0% 100%) 0,
+    hsl(0 0% 100%) calc(var(--section-text-fill) * 100vw),
+    hsl(var(--muted-foreground)) calc(var(--section-text-fill) * 100vw),
+    hsl(var(--muted-foreground)) 100vw
+  );
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+main > section[data-scroll-tone]
+  :is(h1, h2, h3, h4, h5, h6)
+  :is(span, strong, em, b, i, small, sub, sup, cite):not(:has(svg)) {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  background-image: inherit;
+  background-attachment: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Links, icon rows, accordion title: color-mix (clip would break SVG / chevrons) */
+main > section[data-scroll-tone] li > a,
+main > section[data-scroll-tone] a:not(li > a):not([data-solid-control]),
+main > section[data-scroll-tone] blockquote :is(footer, cite),
+main > section[data-scroll-tone] :is(h1, h2, h3, h4, h5, h6) span:has(svg),
+main > section[data-scroll-tone] [data-scroll-text] {
+  -webkit-text-fill-color: unset;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  color: color-mix(
+    in oklch,
+    hsl(var(--muted-foreground)) calc((1 - var(--section-text-fill)) * 100%),
+    hsl(0 0% 100%) calc(var(--section-text-fill) * 100%)
+  ) !important;
+}
+
+main > section[data-scroll-tone] [data-scroll-text] *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit;
+  background: none !important;
+}
+
+.min-h-screen > footer
+  :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    figcaption,
+    label,
+    th,
+    td,
+    dt,
+    dd,
+    address,
+    summary,
+    caption,
+    time,
+    kbd,
+    samp,
+    var,
+    pre,
+    code
+  ),
+.min-h-screen > footer li:not(:has(> a)),
+.min-h-screen > footer span:not(:has(span)),
+.min-h-screen > footer [data-scroll-text-block] {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    hsl(0 0% 100%) 0,
+    hsl(0 0% 100%) calc(var(--section-text-fill) * 100vw),
+    hsl(var(--muted-foreground)) calc(var(--section-text-fill) * 100vw),
+    hsl(var(--muted-foreground)) 100vw
+  );
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.min-h-screen > footer :is(h1, h2, h3, h4, h5, h6) :is(span, strong, em, b, i, small, sub, sup, cite):not(:has(svg)) {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  background-image: inherit;
+  background-attachment: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.min-h-screen > footer li > a,
+.min-h-screen > footer a:not(li > a):not([data-solid-control]),
+.min-h-screen > footer blockquote :is(footer, cite),
+.min-h-screen > footer :is(h1, h2, h3, h4, h5, h6) span:has(svg) {
+  -webkit-text-fill-color: unset;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  color: color-mix(
+    in oklch,
+    hsl(var(--muted-foreground)) calc((1 - var(--section-text-fill)) * 100%),
+    hsl(0 0% 100%) calc(var(--section-text-fill) * 100%)
+  ) !important;
+}
+
+[data-solid-control],
+main > section[data-scroll-tone] a[data-solid-control],
+.min-h-screen > footer a[data-solid-control] {
+  color: rgb(0 0 0) !important;
+  -webkit-text-fill-color: unset !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+
+[data-solid-control] svg {
+  color: currentColor;
+}
+
+/* Navbar + hero: solid white; not driven by page scroll tint */
+nav a:not([data-solid-control]),
+nav span.font-display {
+  color: hsl(0 0% 100%) !important;
+  -webkit-text-fill-color: unset !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+
+main section[data-hero] :is(h1, p),
+main section[data-hero] h1 :is(span, strong, em, b, i),
+main section[data-hero] h1 span:has(svg) {
+  color: hsl(0 0% 100%) !important;
+  -webkit-text-fill-color: unset !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}

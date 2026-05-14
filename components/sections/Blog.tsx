@@ -3,31 +3,35 @@ import { ArrowRight } from "lucide-react";
 const POSTS = [
   {
     id: 1,
-    title: "The brief is dead. Long live the prototype.",
-    category: "DESIGN",
+    title: "How we size seed checks in two meetings or less.",
+    category: "MEMO",
   },
   {
     id: 2,
-    title: "WordPress to Webflow migration: why and how to make the switch in 2025",
-    category: "NO-CODE",
+    title: "What we look for in fintech underwriting before we wire.",
+    category: "RISK",
   },
   {
     id: 3,
-    title: "The no-code hype train and why it's not stopping",
-    category: "NO-CODE",
+    title: "Why we keep reserves for follow-on in every fund cycle.",
+    category: "FUNDS",
   },
 ];
 
 export function Blog() {
   return (
-    <section className="py-24 px-6 md:px-12 bg-card border-t border-border">
+    <section data-scroll-tone className="py-24 px-6 md:px-12 bg-card border-t border-border">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
-          <h2 className="text-3xl md:text-5xl font-display font-medium">
-            We share what we know.
-          </h2>
-          <a href="#" className="inline-flex items-center gap-2 text-sm font-bold tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors">
-            CHECK OUT OUR BLOG <ArrowRight className="w-4 h-4" />
+          <h2 className="text-3xl md:text-5xl font-display font-medium">We publish what we practice.</h2>
+          <a
+            href="#"
+            className="inline-flex items-center gap-2 text-sm font-bold tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <span data-scroll-link-text className="inline">
+              READ OUR MEMOS
+            </span>
+            <ArrowRight className="w-4 h-4 shrink-0" />
           </a>
         </div>
 

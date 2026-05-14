@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ScrollCopyOpacity } from "@/components/ScrollCopyOpacity";
 
 export const metadata: Metadata = {
-  title: "Tonik — Design Studio for Visionaries",
-  description: "Founder-first, 0→1 studio that defines, designs, and builds products and other digital wizardry. Trusted by 200+ YCombinator & Speedrun founders.",
+  title: "Taz Investments — Early-Stage Capital",
+  description:
+    "Investor-first partner for seed and Series A. We move with clear terms, fast diligence, and steady support for founders building real businesses.",
   openGraph: {
-    title: "Tonik — Design Studio for Visionaries",
-    description: "Founder-first, 0→1 studio that defines, designs, and builds products.",
+    title: "Taz Investments — Early-Stage Capital",
+    description:
+      "Investor-first partner for seed and Series A. Clear terms, fast diligence, steady founder support.",
     images: ["/opengraph.jpg"],
   },
 };
@@ -19,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-background text-foreground antialiased overflow-x-hidden">
+        <ScrollCopyOpacity />
         {children}
       </body>
     </html>
