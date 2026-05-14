@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section
       data-hero
-      className="relative min-h-[90vh] flex flex-col justify-end pt-32 pb-12 px-6 md:px-12 overflow-hidden"
+      className="relative min-h-[90vh] flex flex-col justify-end pt-20 pb-28 px-6 md:px-12 overflow-hidden md:pb-32"
     >
       <div className="absolute top-1/2 right-[10%] -translate-y-1/2 w-1/3 max-w-[500px] aspect-square rounded-full opacity-80 mix-blend-lighten pointer-events-none">
         <Image

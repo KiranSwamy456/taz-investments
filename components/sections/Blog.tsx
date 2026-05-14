@@ -20,7 +20,7 @@ const POSTS = [
 
 export function Blog() {
   return (
-    <section data-scroll-tone className="py-24 px-6 md:px-12 bg-card border-t border-border">
+    <section id="insights" data-scroll-tone className="py-24 px-6 md:px-12 bg-card border-t border-border">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
           <h2 className="text-3xl md:text-5xl font-display font-medium">We publish what we practice.</h2>
