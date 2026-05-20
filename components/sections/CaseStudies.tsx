@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ImageHoverBlock } from "@/components/ImageHoverBlock";
 import { investmentImages } from "@/lib/investmentMedia";
 
 const C = [
@@ -165,7 +166,7 @@ export function CaseStudies() {
       <section data-scroll-tone className="pt-8 pb-32 px-6 md:px-12 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-x-12 md:gap-y-24 items-start">
-            {CASE_STUDIES.map((item) => {
+            {CASE_STUDIES.map((item, index) => {
               if ("type" in item && item.type === "quote") {
                 return (
                   <div key={item.id} className="col-span-1 md:col-span-12 my-12">
@@ -193,28 +194,35 @@ export function CaseStudies() {
               const colSpan = isLarge ? "md:col-span-8" : "md:col-span-4";
 
               return (
-                <div key={study.id} className={`group cursor-pointer ${colSpan} flex flex-col gap-6`}>
-                  <div
-                    className={`relative w-full rounded-2xl overflow-hidden bg-muted ${isLarge ? "aspect-[16/10]" : "aspect-square"}`}
-                  >
-                    <div className="absolute top-4 left-4 z-10">
+                <div key={study.id} className={`cursor-pointer ${colSpan}`}>
+                  <ImageHoverBlock
+                    aspectClassName={isLarge ? "aspect-[16/10]" : "aspect-square"}
+                    revealDelay={(index % 4) * 0.08}
+                    overlayPosition="top"
+                    overlay={
                       <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase bg-background/80 backdrop-blur-md rounded-full border border-white/10 text-white">
                         Portfolio
                       </span>
-                    </div>
+                    }
+                    caption={
+                      <div className="pr-8 pt-6">
+                        <h3 className="text-sm font-bold tracking-widest text-muted-foreground uppercase mb-3">
+                          {study.client}
+                        </h3>
+                        <p className="text-lg md:text-2xl font-medium leading-snug text-foreground/90">
+                          {study.description}
+                        </p>
+                      </div>
+                    }
+                  >
                     <Image
                       src={study.image}
                       alt={study.title}
                       fill
-                      className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
-                  </div>
-                  <div className="pr-8">
-                    <h3 className="text-sm font-bold tracking-widest text-muted-foreground uppercase mb-3">
-                      {study.client}
-                    </h3>
-                    <p className="text-lg md:text-2xl font-medium leading-snug text-foreground/90">{study.description}</p>
-                  </div>
+                  </ImageHoverBlock>
                 </div>
               );
             })}

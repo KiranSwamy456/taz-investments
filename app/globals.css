@@ -48,22 +48,22 @@
   --app-font-display: 'Outfit', sans-serif;
   --radius: 0.5rem;
 
-  --background: 0 0% 4%;
+  --background: 0 0% 12.94%; /* #212121 */
   --foreground: 0 0% 98%;
 
-  --card: 0 0% 6%;
+  --card: 0 0% 16%; /* slightly above bg for cards / reveal layers */
   --card-foreground: 0 0% 98%;
 
-  --popover: 0 0% 6%;
+  --popover: 0 0% 16%;
   --popover-foreground: 0 0% 98%;
 
   --primary: 0 0% 98%;
   --primary-foreground: 0 0% 9%;
 
-  --secondary: 0 0% 12%;
+  --secondary: 0 0% 18%;
   --secondary-foreground: 0 0% 98%;
 
-  --muted: 0 0% 12%;
+  --muted: 0 0% 18%;
   --muted-foreground: 0 0% 60%;
 
   --accent: 162 100% 40%;
@@ -72,8 +72,8 @@
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 0 0% 12%;
-  --input: 0 0% 12%;
+  --border: 0 0% 22%;
+  --input: 0 0% 18%;
   --ring: 0 0% 83.1%;
 }
 
@@ -87,10 +87,10 @@
   }
 }
 
-/* Per-section: --section-text-fill 0→1 (ScrollCopyOpacity). Block copy uses fixed gradient = one left→right sweep across wraps. */
+/* Per-element --text-fill 0→1 (ScrollCopyOpacity): each visible block fills as it moves toward the top. */
 main > section[data-scroll-tone],
 .min-h-screen > footer {
-  --section-text-fill: 0;
+  --text-fill: 0;
 }
 
 /* Left → right white: edge at calc(fill * 100vw); fixed attachment aligns all glyphs in the section */
@@ -129,8 +129,8 @@ main > section[data-scroll-tone] [data-scroll-text-block] {
   background-image: linear-gradient(
     90deg,
     hsl(0 0% 100%) 0,
-    hsl(0 0% 100%) calc(var(--section-text-fill) * 100vw),
-    hsl(var(--muted-foreground)) calc(var(--section-text-fill) * 100vw),
+    hsl(0 0% 100%) calc(var(--text-fill, 0) * 100vw),
+    hsl(var(--muted-foreground)) calc(var(--text-fill, 0) * 100vw),
     hsl(var(--muted-foreground)) 100vw
   );
   background-attachment: fixed;
@@ -161,8 +161,8 @@ main > section[data-scroll-tone] [data-scroll-text] {
   -webkit-background-clip: unset !important;
   color: color-mix(
     in oklch,
-    hsl(var(--muted-foreground)) calc((1 - var(--section-text-fill)) * 100%),
-    hsl(0 0% 100%) calc(var(--section-text-fill) * 100%)
+    hsl(var(--muted-foreground)) calc((1 - var(--text-fill, 0)) * 100%),
+    hsl(0 0% 100%) calc(var(--text-fill, 0) * 100%)
   ) !important;
 }
 
@@ -206,8 +206,8 @@ main > section[data-scroll-tone] [data-scroll-text] *:not(svg):not(path):not(cir
   background-image: linear-gradient(
     90deg,
     hsl(0 0% 100%) 0,
-    hsl(0 0% 100%) calc(var(--section-text-fill) * 100vw),
-    hsl(var(--muted-foreground)) calc(var(--section-text-fill) * 100vw),
+    hsl(0 0% 100%) calc(var(--text-fill, 0) * 100vw),
+    hsl(var(--muted-foreground)) calc(var(--text-fill, 0) * 100vw),
     hsl(var(--muted-foreground)) 100vw
   );
   background-attachment: fixed;
@@ -234,9 +234,18 @@ main > section[data-scroll-tone] [data-scroll-text] *:not(svg):not(path):not(cir
   -webkit-background-clip: unset !important;
   color: color-mix(
     in oklch,
-    hsl(var(--muted-foreground)) calc((1 - var(--section-text-fill)) * 100%),
-    hsl(0 0% 100%) calc(var(--section-text-fill) * 100%)
+    hsl(var(--muted-foreground)) calc((1 - var(--text-fill, 0)) * 100%),
+    hsl(0 0% 100%) calc(var(--text-fill, 0) * 100%)
   ) !important;
+}
+
+/* Footer wordmark: always solid white, not scroll-gradient */
+.min-h-screen > footer [data-brand-wordmark] {
+  color: hsl(0 0% 100%) !important;
+  -webkit-text-fill-color: hsl(0 0% 100%) !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
 }
 
 [data-solid-control],
@@ -253,7 +262,9 @@ main > section[data-scroll-tone] a[data-solid-control],
   color: currentColor;
 }
 
-/* Navbar + hero: solid white; not driven by page scroll tint */
+/* Header + hero: solid white; not driven by page scroll tint */
+header a,
+header a span,
 nav a:not([data-solid-control]),
 nav span.font-display {
   color: hsl(0 0% 100%) !important;

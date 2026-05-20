@@ -81,7 +81,10 @@ export function Footer() {
         </div>
 
         <div className="w-full flex flex-col items-center justify-center">
-          <h2 className="text-[8vw] leading-none font-display font-black tracking-tighter w-full text-center text-foreground/90">
+          <h2
+            data-brand-wordmark
+            className="text-[8vw] leading-none font-display font-black tracking-tighter w-full text-center text-white"
+          >
             tazinvestments
           </h2>
           <div className="w-full flex justify-between items-center mt-8 text-xs text-muted-foreground tracking-widest font-semibold">

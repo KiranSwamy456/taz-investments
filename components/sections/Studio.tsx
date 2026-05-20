@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { ImageHoverBlock } from "@/components/ImageHoverBlock";
 import { investmentImages } from "@/lib/investmentMedia";
 
 export function Studio() {
@@ -23,32 +24,59 @@ export function Studio() {
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
           <div className="md:col-span-7 flex flex-col gap-6">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
-              <Image src={investmentImages.team1} alt="Investment team in session" fill className="object-cover" />
-              <div className="absolute bottom-4 left-4">
-                <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase bg-black/50 backdrop-blur-md rounded-full text-white">
+            <ImageHoverBlock
+              aspectClassName="aspect-[4/3]"
+              revealDelay={0}
+              overlay={
+                <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase bg-background/50 backdrop-blur-md rounded-full text-white">
                   IC MEETING
                 </span>
-              </div>
-            </div>
+              }
+            >
+              <Image
+                src={investmentImages.team1}
+                alt="Investment team in session"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 60vw"
+              />
+            </ImageHoverBlock>
           </div>
           <div className="md:col-span-5 flex flex-col gap-6">
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted">
-              <Image src={investmentImages.team2} alt="Partners at work" fill className="object-cover" />
-              <div className="absolute bottom-4 left-4">
-                <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase bg-black/50 backdrop-blur-md rounded-full text-white">
+            <ImageHoverBlock
+              aspectClassName="aspect-square"
+              revealDelay={0.1}
+              overlay={
+                <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase bg-background/50 backdrop-blur-md rounded-full text-white">
                   LP DINNER
                 </span>
-              </div>
-            </div>
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-muted">
-              <Image src={investmentImages.team3} alt="Portfolio day" fill className="object-cover" />
-              <div className="absolute bottom-4 left-4">
-                <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase bg-black/50 backdrop-blur-md rounded-full text-white">
+              }
+            >
+              <Image
+                src={investmentImages.team2}
+                alt="Partners at work"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
+            </ImageHoverBlock>
+            <ImageHoverBlock
+              aspectClassName="aspect-[16/9]"
+              revealDelay={0.2}
+              overlay={
+                <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase bg-background/50 backdrop-blur-md rounded-full text-white">
                   ANNUAL MEET
                 </span>
-              </div>
-            </div>
+              }
+            >
+              <Image
+                src={investmentImages.team3}
+                alt="Portfolio day"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
+            </ImageHoverBlock>
           </div>
         </div>
 

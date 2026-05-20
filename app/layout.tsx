@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ScrollCopyOpacity } from "@/components/ScrollCopyOpacity";
+import { SiteOpening } from "@/components/SiteOpening";
 
 export const metadata: Metadata = {
   title: "Taz Investments — Early-Stage Capital",
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-background text-foreground antialiased overflow-x-hidden">
+        <SiteOpening />
         <ScrollCopyOpacity />
         {children}
       </body>
