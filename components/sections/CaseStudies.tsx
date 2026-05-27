@@ -148,22 +148,26 @@ const CASE_STUDIES = [
   },
 ] as const;
 
-export function CaseStudies() {
+export function CaseStudies({ showIntro = true }: { showIntro?: boolean }) {
   return (
     <>
-      <section id="works" data-scroll-tone className="pt-32 pb-16 px-6 md:px-12 bg-background">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto">
-            <p className="text-2xl md:text-3xl font-medium text-muted-foreground leading-relaxed">
-              {
-                "Investor-first, early capital that screens fairly, supports operators, and stays aligned from first check through every growth round we join."
-              }
-            </p>
+      {showIntro ? (
+        <section id="works" data-scroll-tone className="bg-background px-6 pb-16 pt-32 md:px-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-2xl font-medium leading-relaxed text-muted-foreground md:text-3xl">
+                Investor-first, early capital that screens fairly, supports operators, and stays aligned from
+                first check through every growth round we join.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section data-scroll-tone className="pt-8 pb-32 px-6 md:px-12 bg-background">
+      <section
+        data-scroll-tone
+        className={`bg-background px-6 pb-32 md:px-12 ${showIntro ? "pt-8" : "pt-12 md:pt-16"}`}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-x-12 md:gap-y-24 items-start">
             {CASE_STUDIES.map((item, index) => {

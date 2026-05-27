@@ -3,24 +3,35 @@ import Image from "next/image";
 import { ImageHoverBlock } from "@/components/ImageHoverBlock";
 import { investmentImages } from "@/lib/investmentMedia";
 
-export function Studio() {
+export function Studio({ showIntro = true }: { showIntro?: boolean }) {
   return (
-    <section id="about" data-scroll-tone className="py-32 px-6 md:px-12 border-t border-border">
+    <section
+      id="about"
+      data-scroll-tone
+      className={`border-t border-border px-6 md:px-12 ${showIntro ? "py-32" : "pb-32 pt-8 md:pt-12"}`}
+    >
       <div className="max-w-7xl mx-auto">
-        <div className="mb-24">
-          <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8 block">OUR TEAM</span>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.1] tracking-tight max-w-4xl">
-            We invest with discipline and stay close when it counts.
-          </h2>
-        </div>
+        {showIntro ? (
+          <>
+            <div className="mb-24">
+              <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8 block">
+                OUR TEAM
+              </span>
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.1] tracking-tight max-w-4xl">
+                We invest with discipline and stay close when it counts.
+              </h2>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-24">
-          <div className="md:col-span-5 md:col-start-8">
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Fintech, software, and healthcare — we focus where cashflow and regulation meet. We are not cheerleaders; we push back when the model drifts. The best founders want honest partners.
-            </p>
-          </div>
-        </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-24">
+              <div className="md:col-span-5 md:col-start-8">
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Fintech, software, and healthcare — we focus where cashflow and regulation meet. We are not
+                  cheerleaders; we push back when the model drifts. The best founders want honest partners.
+                </p>
+              </div>
+            </div>
+          </>
+        ) : null}
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
           <div className="md:col-span-7 flex flex-col gap-6">

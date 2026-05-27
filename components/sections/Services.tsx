@@ -2,20 +2,28 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-export function Services() {
+export function Services({ showIntro = true }: { showIntro?: boolean }) {
   return (
-    <section data-scroll-tone id="thesis" className="py-32 px-6 md:px-12 bg-card border-t border-border">
+    <section
+      data-scroll-tone
+      id="thesis"
+      className={`border-t border-border bg-card px-6 md:px-12 ${showIntro ? "py-32" : "pb-32 pt-8 md:pt-12"}`}
+    >
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground">
-            HOW WE INVEST
-          </span>
-        </div>
+        {showIntro ? (
+          <>
+            <div className="mb-8">
+              <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground">
+                HOW WE INVEST
+              </span>
+            </div>
 
-        <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.1] tracking-tight max-w-4xl mb-24">
-          Capital is the bridge between <span className="italic font-serif text-accent">thesis</span> and outcome. Think of us as{" "}
-          <span className="italic font-serif">your lead check</span>.
-        </h2>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.1] tracking-tight max-w-4xl mb-24">
+              Capital is the bridge between <span className="italic font-serif text-accent">thesis</span> and
+              outcome. Think of us as <span className="italic font-serif">your lead check</span>.
+            </h2>
+          </>
+        ) : null}
 
         <div className="max-w-4xl ml-auto">
           <Accordion type="single" collapsible className="w-full">

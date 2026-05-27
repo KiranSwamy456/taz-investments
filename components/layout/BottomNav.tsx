@@ -6,19 +6,21 @@ import Link from "next/link";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { X } from "lucide-react";
 
+/** Outside → inside: blogs, about us, portfolio, thesis, home */
 const rings = [
-  { scale: 1, inner: 0.72, href: "#works", label: "portfolio", dark: true },
-  { scale: 0.72, inner: 0.48, href: "#about", label: "team", dark: false },
-  { scale: 0.48, inner: 0.28, href: "#contact", label: "contact", dark: true },
-  { scale: 0.28, inner: 0.15, href: "/" as const, label: "home", dark: false },
+  { scale: 1, inner: 0.82, href: "/blogs", label: "Blogs", dark: true },
+  { scale: 0.82, inner: 0.64, href: "/about", label: "About us", dark: false },
+  { scale: 0.64, inner: 0.46, href: "/portfolio", label: "Portfolio", dark: true },
+  { scale: 0.46, inner: 0.3, href: "/thesis", label: "Thesis", dark: false },
+  { scale: 0.3, inner: 0.16, href: "/", label: "Home", dark: true },
 ] as const;
 
-const centerScale = 0.15;
+const centerScale = 0.14;
 
-const OPEN_DURATION = 1.15;
-const STAGGER = 0.13;
-const EASE_IN: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const EASE_OUT: [number, number, number, number] = [0.4, 0, 0.2, 1];
+const OPEN_DURATION = 0.48;
+const STAGGER = 0.045;
+const EASE_IN: [number, number, number, number] = [0.33, 1, 0.38, 1];
+const EASE_OUT: [number, number, number, number] = [0.4, 0, 0.65, 1];
 
 const HOVER_SPRING = { type: "spring" as const, stiffness: 90, damping: 22, mass: 1.1 };
 const WAVE_SPRING = { type: "spring" as const, stiffness: 70, damping: 20, mass: 1.2 };
@@ -56,14 +58,14 @@ const centerVariants: Variants = {
 };
 
 const backdropVariants: Variants = {
-  hidden: { opacity: 0, transition: { duration: 0.4 } },
-  visible: { opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { opacity: 0, transition: { duration: 0.2 } },
+  visible: { opacity: 1, transition: { duration: 0.22, ease: "easeOut" } },
 };
 
-const SHELL_EXIT_DELAY = OPEN_DURATION * 0.78 + rings.length * STAGGER + 0.1;
+const SHELL_EXIT_DELAY = OPEN_DURATION * 0.78 + rings.length * STAGGER + 0.04;
 
 const labelClass = (dark: boolean) =>
-  `pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-semibold lowercase tracking-wide leading-none ${
+  `pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-semibold tracking-wide leading-none ${
     dark ? "text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.9)]" : "text-black [text-shadow:0_1px_0_rgba(255,255,255,0.95)]"
   }`;
 
@@ -99,7 +101,7 @@ export function BottomNav() {
   }, [open, close]);
 
   const navOuterStyle = {
-    ["--nav-outer" as string]: "clamp(268px, 62vw, 460px)",
+    ["--nav-outer" as string]: "clamp(280px, 68vw, 500px)",
   } as CSSProperties;
 
   return (
@@ -123,14 +125,17 @@ export function BottomNav() {
                 className="pointer-events-none absolute inset-0 overflow-visible"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0, transition: { delay: SHELL_EXIT_DELAY, duration: 0.3 } }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
+                exit={{ opacity: 0, transition: { delay: SHELL_EXIT_DELAY, duration: 0.18 } }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
                 onMouseLeave={() => setHoveredRing(null)}
               >
                 {rings.map(({ scale, inner, href, label: labelText, dark }, idx) => {
                   const size = `calc(var(--nav-outer) * ${scale})`;
                   const top = labelTopPercent(scale, inner);
-                  const fontSize = "clamp(0.72rem, calc(var(--nav-outer) * 0.052), 0.98rem)";
+                  const fontSize =
+                    labelText === "About us"
+                      ? "clamp(0.58rem, calc(var(--nav-outer) * 0.044), 0.82rem)"
+                      : "clamp(0.72rem, calc(var(--nav-outer) * 0.052), 0.98rem)";
                   const ringBody = `relative flex h-full w-full items-center justify-center rounded-full overflow-visible ${
                     dark ? "bg-background ring-2 ring-white/20" : "bg-white shadow-md ring-2 ring-black/25"
                   }`;
@@ -149,21 +154,16 @@ export function BottomNav() {
                   );
                   const targetScale = waveScale(idx, hoveredRing);
 
-                  const ringLink =
-                    href === "/" ? (
-                      <Link href="/" onClick={close} className={`pointer-events-auto ${ringBody}`}>
-                        {labelNode}
-                      </Link>
-                    ) : (
-                      <a
-                        href={href}
-                        onClick={close}
-                        className={`pointer-events-auto ${ringBody}`}
-                        aria-label={labelText}
-                      >
-                        {labelNode}
-                      </a>
-                    );
+                  const ringLink = (
+                    <Link
+                      href={href}
+                      onClick={close}
+                      className={`pointer-events-auto ${ringBody}`}
+                      aria-label={labelText}
+                    >
+                      {labelNode}
+                    </Link>
+                  );
 
                   return (
                     <div

@@ -18,24 +18,30 @@ const POSTS = [
   },
 ];
 
-export function Blog() {
+export function Blog({ showIntro = true }: { showIntro?: boolean }) {
   return (
-    <section id="insights" data-scroll-tone className="py-24 px-6 md:px-12 bg-card border-t border-border">
+    <section
+      id="insights"
+      data-scroll-tone
+      className={`border-t border-border bg-card px-6 md:px-12 ${showIntro ? "py-24" : "pb-24 pt-8 md:pt-12"}`}
+    >
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
-          <h2 className="text-3xl md:text-5xl font-display font-medium">We publish what we practice.</h2>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-sm font-bold tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <span data-scroll-link-text className="inline">
-              READ OUR MEMOS
-            </span>
-            <ArrowRight className="w-4 h-4 shrink-0" />
-          </a>
-        </div>
+        {showIntro ? (
+          <div className="mb-16 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+            <h2 className="text-3xl font-display font-medium md:text-5xl">We publish what we practice.</h2>
+            <a
+              href="/blogs"
+              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <span data-scroll-link-text className="inline">
+                READ OUR MEMOS
+              </span>
+              <ArrowRight className="h-4 w-4 shrink-0" />
+            </a>
+          </div>
+        ) : null}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {POSTS.map((post) => (
             <div
               key={post.id}
