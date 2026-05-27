@@ -9,7 +9,7 @@ import { Blog } from "@/components/sections/Blog";
 
 export default function Home() {
   return (
-    <SiteShell>
+    <SiteShell showNav={false}>
       <Hero />
       <ClientLogos />
       <CaseStudies />
