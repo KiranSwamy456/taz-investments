@@ -4,19 +4,15 @@ import { Footer } from "@/components/layout/Footer";
 
 export function SiteShell({
   children,
-  showNav = true,
+  showHeader = true,
 }: {
   children: React.ReactNode;
-  showNav?: boolean;
+  showHeader?: boolean;
 }) {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-accent selection:text-white">
-      {showNav ? (
-        <>
-          <Header />
-          <BottomNav />
-        </>
-      ) : null}
+      {showHeader ? <Header /> : null}
+      <BottomNav />
       <main>{children}</main>
       <Footer />
     </div>
