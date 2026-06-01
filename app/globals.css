@@ -66,8 +66,8 @@
   --muted: 0 0% 18%;
   --muted-foreground: 0 0% 60%;
 
-  --accent: 162 100% 40%;
-  --accent-foreground: 0 0% 98%;
+  --accent: 48 97% 48%; /* #EFBF04 */
+  --accent-foreground: 0 0% 9%;
 
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
@@ -83,7 +83,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground selection:bg-accent selection:text-white;
+    @apply font-sans antialiased bg-background text-foreground selection:bg-accent selection:text-accent-foreground;
   }
 }
 

@@ -10,7 +10,7 @@ export function SiteShell({
   showHeader?: boolean;
 }) {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-accent selection:text-white">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-accent selection:text-accent-foreground">
       {showHeader ? <Header /> : null}
       <BottomNav />
       <main>{children}</main>

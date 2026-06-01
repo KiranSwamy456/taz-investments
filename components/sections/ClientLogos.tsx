@@ -37,7 +37,7 @@ export function ClientLogos() {
             <span className="text-xl font-sans font-black uppercase tracking-widest">IRONWOOD</span>
             <span className="text-xl font-serif italic text-pink-400">Lotus</span>
             <span className="text-xl font-display font-bold text-red-500 uppercase tracking-tighter">RED CANYON</span>
-            <span className="text-xl font-sans font-medium text-green-400">Coastline</span>
+            <span className="text-xl font-sans font-medium text-accent">Coastline</span>
             <span className="text-xl font-mono tracking-widest">VANTAGE</span>
           </div>
         </div>

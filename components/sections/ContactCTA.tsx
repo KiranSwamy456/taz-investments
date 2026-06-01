@@ -13,7 +13,7 @@ export function ContactCTA() {
           </div>
 
           <div className="flex-shrink-0">
-            <div className="w-24 h-24 md:w-40 md:h-40 rounded-full border border-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:text-white transition-all duration-500">
+            <div className="w-24 h-24 md:w-40 md:h-40 rounded-full border border-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:text-accent-foreground transition-all duration-500">
               <ArrowRight className="w-8 h-8 md:w-12 md:h-12 transform -rotate-45 group-hover:rotate-0 transition-transform duration-500" />
             </div>
           </div>

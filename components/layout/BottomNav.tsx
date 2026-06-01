@@ -3,44 +3,108 @@
 import { useCallback, useEffect, useId, useState } from "react";
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
 import { X } from "lucide-react";
+
+/** Uniform band width (every white + black ring same thickness as Blogs). */
+const RING_BAND = 0.18;
 
 /** Outside → inside: blogs, about us, portfolio, thesis, home */
 const rings = [
-  { scale: 1, inner: 0.82, href: "/blogs", label: "Blogs", dark: true },
-  { scale: 0.82, inner: 0.64, href: "/about", label: "About us", dark: false },
-  { scale: 0.64, inner: 0.46, href: "/portfolio", label: "Portfolio", dark: true },
-  { scale: 0.46, inner: 0.3, href: "/thesis", label: "Thesis", dark: false },
-  { scale: 0.3, inner: 0.16, href: "/", label: "Home", dark: true },
+  { scale: 1, href: "/blogs", label: "Blogs", dark: true },
+  { scale: 1 - RING_BAND, href: "/about", label: "About us", dark: false },
+  { scale: 1 - RING_BAND * 2, href: "/portfolio", label: "Portfolio", dark: true },
+  { scale: 1 - RING_BAND * 3, href: "/thesis", label: "Thesis", dark: false },
+  { scale: 1 - RING_BAND * 4, href: "/", label: "Home", dark: true },
 ] as const;
 
-const centerScale = 0.14;
+const centerScale = 0.075;
 
 const OPEN_DURATION = 0.48;
 const STAGGER = 0.045;
 const EASE_IN: [number, number, number, number] = [0.33, 1, 0.38, 1];
 const EASE_OUT: [number, number, number, number] = [0.4, 0, 0.65, 1];
 
-const HOVER_SPRING = { type: "spring" as const, stiffness: 90, damping: 22, mass: 1.1 };
-const WAVE_SPRING = { type: "spring" as const, stiffness: 70, damping: 20, mass: 1.2 };
+const HOVER_SPRING = {
+  type: "spring" as const,
+  stiffness: 90,
+  damping: 22,
+  mass: 1.1,
+};
 
-function labelTopPercent(outerScale: number, innerScale: number): string {
-  const pct = ((outerScale - innerScale) / (4 * outerScale)) * 100;
-  const clamped = Math.min(42, Math.max(5, pct));
-  return `${clamped}%`;
+const TRIGGER_ZOOM_HOVER = {
+  scale: [1, 1.07, 1.22] as const,
+  y: [0, -2, -6] as const,
+  transition: {
+    duration: 0.45,
+    times: [0, 0.35, 1] as const,
+    ease: [0.22, 1, 0.36, 1] as const,
+  },
+};
+
+function NavTriggerRings({ inverted }: { inverted: boolean }) {
+  const black = inverted ? "bg-white" : "bg-background";
+  const white = inverted ? "bg-background" : "bg-white";
+
+  return (
+    <span className="relative block h-full w-full" aria-hidden>
+      <span className={`absolute inset-0 rounded-full transition-colors duration-500 ease-out ${black}`} />
+      <span className={`absolute inset-[11%] rounded-full transition-colors duration-500 ease-out ${white}`} />
+      <span className={`absolute inset-[22%] rounded-full transition-colors duration-500 ease-out ${black}`} />
+      <span className={`absolute inset-[33%] rounded-full transition-colors duration-500 ease-out ${white}`} />
+      <span className={`absolute inset-[44%] rounded-full transition-colors duration-500 ease-out ${black}`} />
+      <span className={`absolute inset-[55%] rounded-full transition-colors duration-500 ease-out ${white}`} />
+      <span className={`absolute inset-[66%] rounded-full transition-colors duration-500 ease-out ${black}`} />
+    </span>
+  );
 }
+const WAVE_SPRING = {
+  type: "spring" as const,
+  stiffness: 70,
+  damping: 20,
+  mass: 1.2,
+};
+
+/** Vertical center of ring band from bottom anchor (circle centers sit on bottom edge). */
+function ringLabelBottom(ringScale: number, nextScale: number): string {
+  const midRadius = (ringScale + nextScale) / 4;
+  return `calc(var(--nav-outer) * ${midRadius})`;
+}
+
+function ringLabelFontSize(label: string): string {
+  return label === "About us"
+    ? "clamp(0.65rem, calc(var(--nav-outer) * 0.048), 0.88rem)"
+    : "clamp(0.75rem, calc(var(--nav-outer) * 0.056), 1.05rem)";
+}
+
+const GOLD = "hsl(48, 97%, 48%)";
+const GOLD_BORDER = "hsl(48, 97%, 48%)";
+const RING_BORDER_DARK = "rgba(255, 255, 255, 0.22)";
+const RING_BORDER_LIGHT = "rgba(0, 0, 0, 0.18)";
 
 const ringVariants: Variants = {
   hidden: (i: number) => ({
     scale: 0,
     opacity: 0,
-    transition: { duration: OPEN_DURATION * 0.78, delay: i * STAGGER, ease: EASE_OUT },
+    transition: {
+      duration: OPEN_DURATION * 0.78,
+      delay: i * STAGGER,
+      ease: EASE_OUT,
+    },
   }),
   visible: (i: number) => ({
     scale: 1,
     opacity: 1,
-    transition: { duration: OPEN_DURATION, delay: (rings.length - 1 - i) * STAGGER, ease: EASE_IN },
+    transition: {
+      duration: OPEN_DURATION,
+      delay: (rings.length - 1 - i) * STAGGER,
+      ease: EASE_IN,
+    },
   }),
 };
 
@@ -48,7 +112,11 @@ const centerVariants: Variants = {
   hidden: {
     scale: 0,
     opacity: 0,
-    transition: { duration: OPEN_DURATION * 0.78, delay: rings.length * STAGGER, ease: EASE_OUT },
+    transition: {
+      duration: OPEN_DURATION * 0.78,
+      delay: rings.length * STAGGER,
+      ease: EASE_OUT,
+    },
   },
   visible: {
     scale: 1,
@@ -64,9 +132,43 @@ const backdropVariants: Variants = {
 
 const SHELL_EXIT_DELAY = OPEN_DURATION * 0.78 + rings.length * STAGGER + 0.04;
 
-const labelClass = (dark: boolean) =>
-  `pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-semibold tracking-wide leading-none ${
-    dark ? "text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.9)]" : "text-black [text-shadow:0_1px_0_rgba(255,255,255,0.95)]"
+function ringOpenDelay(ringIndex: number): number {
+  return (rings.length - 1 - ringIndex) * STAGGER;
+}
+
+const labelVariants: Variants = {
+  hidden: (i: number) => ({
+    opacity: 0,
+    scale: 0.88,
+    transition: {
+      duration: 0.15,
+      delay: i * STAGGER * 0.5,
+      ease: EASE_OUT,
+    },
+  }),
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      opacity: {
+        duration: 0.28,
+        delay: ringOpenDelay(i) + OPEN_DURATION * 0.82,
+        ease: EASE_IN,
+      },
+      scale: {
+        duration: 0.28,
+        delay: ringOpenDelay(i) + OPEN_DURATION * 0.82,
+        ease: EASE_IN,
+      },
+    },
+  }),
+};
+
+const labelLinkClass = (dark: boolean) =>
+  `block whitespace-nowrap text-center font-semibold tracking-wide leading-none transition-colors hover:text-accent ${
+    dark
+      ? "[text-shadow:0_1px_3px_rgba(0,0,0,0.85)]"
+      : "[text-shadow:0_1px_2px_rgba(255,255,255,0.9)]"
   }`;
 
 /** Subtle wave: hovered ring lifts most; neighbors ease in with delay. */
@@ -82,6 +184,8 @@ function waveScale(ringIndex: number, hovered: number | null): number {
 export function BottomNav() {
   const [open, setOpen] = useState(false);
   const [hoveredRing, setHoveredRing] = useState<number | null>(null);
+  const [triggerHovered, setTriggerHovered] = useState(false);
+  const reduceMotion = useReducedMotion();
   const panelId = useId();
 
   const close = useCallback(() => {
@@ -101,7 +205,7 @@ export function BottomNav() {
   }, [open, close]);
 
   const navOuterStyle = {
-    ["--nav-outer" as string]: "clamp(280px, 68vw, 500px)",
+    ["--nav-outer" as string]: "clamp(320px, 76vw, 600px)",
   } as CSSProperties;
 
   return (
@@ -115,7 +219,7 @@ export function BottomNav() {
           className="relative overflow-visible"
           style={{
             width: "var(--nav-outer)",
-            height: "calc(var(--nav-outer) * 0.5 + 1.75rem)",
+            height: "calc(var(--nav-outer) * 0.5 + 2.5rem)",
           }}
         >
           <AnimatePresence>
@@ -125,84 +229,164 @@ export function BottomNav() {
                 className="pointer-events-none absolute inset-0 overflow-visible"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0, transition: { delay: SHELL_EXIT_DELAY, duration: 0.18 } }}
+                exit={{
+                  opacity: 0,
+                  transition: { delay: SHELL_EXIT_DELAY, duration: 0.18 },
+                }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 onMouseLeave={() => setHoveredRing(null)}
               >
-                {rings.map(({ scale, inner, href, label: labelText, dark }, idx) => {
-                  const size = `calc(var(--nav-outer) * ${scale})`;
-                  const top = labelTopPercent(scale, inner);
-                  const fontSize =
-                    labelText === "About us"
-                      ? "clamp(0.58rem, calc(var(--nav-outer) * 0.044), 0.82rem)"
-                      : "clamp(0.72rem, calc(var(--nav-outer) * 0.052), 0.98rem)";
-                  const ringBody = `relative flex h-full w-full items-center justify-center rounded-full overflow-visible ${
-                    dark ? "bg-background ring-2 ring-white/20" : "bg-white shadow-md ring-2 ring-black/25"
-                  }`;
-                  const labelNode = (
-                    <motion.span
-                      className={labelClass(dark)}
-                      style={{ top, fontSize }}
-                      animate={{
-                        y: hoveredRing === idx ? -2 : 0,
-                        scale: hoveredRing === idx ? 1.06 : 1,
-                      }}
-                      transition={WAVE_SPRING}
-                    >
-                      {labelText}
-                    </motion.span>
-                  );
-                  const targetScale = waveScale(idx, hoveredRing);
+                {/* Soft gold glow (circular only — no scale to avoid square flash) */}
+                <motion.div
+                  className="pointer-events-none absolute left-1/2 bottom-0 z-[-1] aspect-square -translate-x-1/2 translate-y-1/2 rounded-full bg-accent/20 blur-[90px]"
+                  style={{ width: "var(--nav-outer)" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.5, 0.22] }}
+                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                  transition={{
+                    duration: OPEN_DURATION + rings.length * STAGGER,
+                    times: [0, 0.5, 1],
+                    ease: EASE_IN,
+                  }}
+                />
 
-                  const ringLink = (
-                    <Link
-                      href={href}
-                      onClick={close}
-                      className={`pointer-events-auto ${ringBody}`}
-                      aria-label={labelText}
-                    >
-                      {labelNode}
-                    </Link>
-                  );
+                {rings.map(({ scale, href, label: labelText, dark }, idx) => {
+                    const size = `calc(var(--nav-outer) * ${scale})`;
+                    const ringFill = dark ? "bg-background" : "bg-white shadow-md";
+                    const targetScale = waveScale(idx, hoveredRing);
+                    const goldFadeDelay = ringOpenDelay(idx) + OPEN_DURATION * 0.45;
+                    const settledBorder = dark ? RING_BORDER_DARK : RING_BORDER_LIGHT;
 
-                  return (
-                    <div
-                      key={href + labelText}
-                      className="pointer-events-none absolute left-1/2 bottom-0 z-0 -translate-x-1/2 translate-y-1/2"
-                      style={{ width: size, height: size }}
-                    >
+                    const ringLink = (
                       <motion.div
-                        className="h-full w-full will-change-transform"
-                        style={{ transformOrigin: "50% 50%" }}
+                        className={`pointer-events-auto h-full w-full overflow-hidden rounded-full border-[3px] ${ringFill}`}
+                        initial={{ borderColor: GOLD_BORDER }}
+                        animate={{ borderColor: settledBorder }}
+                        transition={{
+                          borderColor: {
+                            duration: 0.5,
+                            delay: goldFadeDelay,
+                            ease: "easeOut",
+                          },
+                        }}
+                      >
+                        <Link
+                          href={href}
+                          onClick={close}
+                          className="block h-full w-full rounded-full"
+                          aria-label={labelText}
+                        />
+                      </motion.div>
+                    );
+
+                    return (
+                      <div
+                        key={href + labelText}
+                        className="pointer-events-none absolute left-1/2 bottom-0 z-0 -translate-x-1/2 translate-y-1/2 overflow-hidden rounded-full"
+                        style={{ width: size, height: size }}
+                      >
+                        <motion.div
+                          className="h-full w-full overflow-hidden rounded-full will-change-transform"
+                          style={{ transformOrigin: "50% 50%" }}
+                          custom={idx}
+                          variants={ringVariants}
+                          initial="hidden"
+                          animate="visible"
+                          exit="hidden"
+                          onHoverStart={() => setHoveredRing(idx)}
+                          onHoverEnd={() =>
+                            setHoveredRing((h) => (h === idx ? null : h))
+                          }
+                        >
+                          <motion.div
+                            className="h-full w-full overflow-hidden rounded-full"
+                            style={{ transformOrigin: "50% 50%" }}
+                            animate={{ scale: targetScale }}
+                            transition={{
+                              ...WAVE_SPRING,
+                              delay:
+                                hoveredRing === null
+                                  ? 0
+                                  : Math.abs(idx - hoveredRing) * 0.07,
+                            }}
+                          >
+                            {ringLink}
+                          </motion.div>
+                        </motion.div>
+                      </div>
+                    );
+                  })}
+
+                {/* Labels share one anchor so each name sits centered in its ring band */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[55] h-[calc(var(--nav-outer)*0.5)]">
+                  {rings.map(({ scale, href, label: labelText, dark }, idx) => {
+                    const nextScale =
+                      idx < rings.length - 1
+                        ? rings[idx + 1].scale
+                        : centerScale * 1.7;
+
+                    return (
+                      <motion.div
+                        key={`label-${href}`}
+                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 translate-y-1/2"
+                        style={{ bottom: ringLabelBottom(scale, nextScale) }}
                         custom={idx}
-                        variants={ringVariants}
+                        variants={labelVariants}
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
                         onHoverStart={() => setHoveredRing(idx)}
-                        onHoverEnd={() => setHoveredRing((h) => (h === idx ? null : h))}
+                        onHoverEnd={() =>
+                          setHoveredRing((h) => (h === idx ? null : h))
+                        }
                       >
-                        <motion.div
-                          className="h-full w-full"
-                          style={{ transformOrigin: "50% 50%" }}
-                          animate={{ scale: targetScale }}
-                          transition={{
-                            ...WAVE_SPRING,
-                            delay: hoveredRing === null ? 0 : Math.abs(idx - hoveredRing) * 0.07,
+                        <motion.span
+                          className="block"
+                          animate={{
+                            y: hoveredRing === idx ? -2 : 0,
+                            scale: hoveredRing === idx ? 1.06 : 1,
                           }}
+                          transition={WAVE_SPRING}
                         >
-                          {ringLink}
-                        </motion.div>
+                          <motion.span
+                            style={{ fontSize: ringLabelFontSize(labelText) }}
+                            animate={{
+                              color:
+                                hoveredRing === idx
+                                  ? GOLD
+                                  : dark
+                                    ? "#ffffff"
+                                    : "#000000",
+                            }}
+                            initial={{ color: GOLD }}
+                            transition={{
+                              color: {
+                                duration: 0.4,
+                                delay: ringOpenDelay(idx) + OPEN_DURATION * 0.82,
+                                ease: "easeOut",
+                              },
+                            }}
+                          >
+                            <Link
+                              href={href}
+                              onClick={close}
+                              className={`${labelLinkClass(dark)} pointer-events-auto px-3 py-1`}
+                              style={{ color: "inherit", fontSize: "inherit" }}
+                            >
+                              {labelText}
+                            </Link>
+                          </motion.span>
+                        </motion.span>
                       </motion.div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
 
                 <div
-                  className="pointer-events-none absolute left-1/2 bottom-0 z-[80] -translate-x-1/2 translate-y-1/2"
+                  className="pointer-events-none absolute left-1/2 bottom-0 z-[80] flex -translate-x-1/2 translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-[3px] border-accent/70 bg-white p-[clamp(6px,1.6vw,12px)] shadow-md"
                   style={{
-                    width: `calc(var(--nav-outer) * ${centerScale})`,
-                    height: `calc(var(--nav-outer) * ${centerScale})`,
+                    width: `calc(var(--nav-outer) * ${centerScale * 1.7})`,
+                    height: `calc(var(--nav-outer) * ${centerScale * 1.7})`,
                   }}
                 >
                   <motion.button
@@ -213,11 +397,15 @@ export function BottomNav() {
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
-                    style={{ transformOrigin: "50% 50%" }}
+                    style={{
+                      transformOrigin: "50% 50%",
+                      width: `calc(var(--nav-outer) * ${centerScale})`,
+                      height: `calc(var(--nav-outer) * ${centerScale})`,
+                    }}
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.96 }}
                     transition={HOVER_SPRING}
-                      className="pointer-events-auto flex h-full w-full items-center justify-center rounded-full bg-background text-white shadow-md ring-2 ring-white/20"
+                    className="pointer-events-auto flex shrink-0 items-center justify-center rounded-full bg-background text-accent"
                   >
                     <X className="h-[38%] w-[38%]" strokeWidth={2.5} />
                   </motion.button>
@@ -226,7 +414,7 @@ export function BottomNav() {
             ) : null}
           </AnimatePresence>
 
-          <button
+          <motion.button
             type="button"
             aria-expanded={open}
             aria-controls={panelId}
@@ -234,18 +422,45 @@ export function BottomNav() {
             aria-hidden={open}
             onClick={() => setOpen(true)}
             tabIndex={open ? -1 : 0}
-            className={`absolute left-1/2 bottom-0 z-[70] flex h-14 w-14 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg ring-1 ring-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black md:h-16 md:w-16 ${
-              open ? "pointer-events-none scale-0 opacity-0" : "scale-100 opacity-100"
+            onHoverStart={() => setTriggerHovered(true)}
+            onHoverEnd={() => setTriggerHovered(false)}
+            onFocus={() => setTriggerHovered(true)}
+            onBlur={() => setTriggerHovered(false)}
+            className={`absolute left-1/2 bottom-0 z-[70] flex h-[4.25rem] w-[4.25rem] -translate-x-1/2 translate-y-1/2 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black md:h-[4.75rem] md:w-[4.75rem] ${
+              open
+                ? "pointer-events-none scale-0 opacity-0"
+                : "scale-100 opacity-100"
             }`}
-            style={{ transformOrigin: "50% 50%" }}
+            style={{ transformOrigin: "50% 100%" }}
           >
-            <span className="relative flex h-9 w-9 items-center justify-center md:h-10 md:w-10" aria-hidden>
-              <span className="absolute inset-0 rounded-full border-2 border-black/80" />
-              <span className="absolute inset-[5px] rounded-full border border-black/50 md:inset-[6px]" />
-              <span className="absolute inset-[10px] rounded-full border border-black/35 md:inset-[11px]" />
-              <span className="absolute inset-[14px] rounded-full bg-background md:inset-[15px]" />
-            </span>
-          </button>
+            <motion.span
+              className={`flex h-full w-full items-center justify-center rounded-full p-[5px] shadow-lg ring-1 transition-colors duration-500 ease-out will-change-transform md:p-[6px] ${
+                triggerHovered
+                  ? "bg-background ring-white/15"
+                  : "bg-white ring-black/10"
+              }`}
+              style={{ transformOrigin: "50% 50%" }}
+              initial={false}
+              animate={
+                reduceMotion
+                  ? {
+                      scale: triggerHovered ? 1.08 : 1,
+                      y: 0,
+                      transition: { duration: 0.25, ease: "easeOut" },
+                    }
+                  : triggerHovered
+                    ? TRIGGER_ZOOM_HOVER
+                    : {
+                        scale: 1,
+                        y: 0,
+                        transition: { duration: 0.38, ease: [0.4, 0, 0.65, 1] },
+                      }
+              }
+              whileTap={reduceMotion ? { scale: 1.05 } : { scale: 1.14, y: -4 }}
+            >
+              <NavTriggerRings inverted={triggerHovered} />
+            </motion.span>
+          </motion.button>
         </div>
       </div>
 

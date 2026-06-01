@@ -10,6 +10,7 @@ import {
 } from "framer-motion";
 import { Play } from "lucide-react";
 import Image from "next/image";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { investmentImages } from "@/lib/investmentMedia";
 
 const SPRING = { stiffness: 120, damping: 22, mass: 0.8 };
@@ -115,6 +116,15 @@ export function Hero() {
       onMouseLeave={onLeave}
       className="relative flex min-h-[92vh] flex-col justify-end overflow-hidden px-6 pb-28 pt-20 md:px-12 md:pb-32 [perspective:1400px]"
     >
+      <motion.div
+        className="absolute left-6 top-8 z-20 md:left-12 md:top-10"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.45, ease: REVEAL_EASE }}
+      >
+        <BrandLogo size="md" />
+      </motion.div>
+
       <motion.div
         aria-hidden
         className="pointer-events-none absolute right-[5%] top-[38%] z-0 h-[min(55vw,520px)] w-[min(55vw,520px)] rounded-full bg-accent/20 blur-[100px]"
