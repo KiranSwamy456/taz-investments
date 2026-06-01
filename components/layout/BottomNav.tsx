@@ -38,12 +38,12 @@ const HOVER_SPRING = {
 };
 
 const TRIGGER_ZOOM_HOVER = {
-  scale: [1, 1.07, 1.22] as const,
-  y: [0, -2, -6] as const,
+  scale: [1, 1.07, 1.22],
+  y: [0, -2, -6],
   transition: {
     duration: 0.45,
-    times: [0, 0.35, 1] as const,
-    ease: [0.22, 1, 0.36, 1] as const,
+    times: [0, 0.35, 1],
+    ease: EASE_IN,
   },
 };
 
