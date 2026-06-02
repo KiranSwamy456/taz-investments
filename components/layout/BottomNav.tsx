@@ -11,7 +11,7 @@ import {
 } from "framer-motion";
 import { X } from "lucide-react";
 
-/** Uniform band width (every white + black ring same thickness as Blogs). */
+/** Uniform band width (every gold + black ring same thickness). */
 const RING_BAND = 0.18;
 
 /** Outside → inside: blogs, about us, portfolio, thesis, home */
@@ -85,7 +85,7 @@ function ringLabelFontSize(label: string): string {
 const GOLD = "hsl(48, 97%, 48%)";
 const GOLD_BORDER = "hsl(48, 97%, 48%)";
 const RING_BORDER_DARK = "rgba(255, 255, 255, 0.22)";
-const RING_BORDER_LIGHT = "rgba(0, 0, 0, 0.18)";
+const RING_BORDER_GOLD = "rgba(0, 0, 0, 0.2)";
 
 const ringVariants: Variants = {
   hidden: (i: number) => ({
@@ -252,10 +252,10 @@ export function BottomNav() {
 
                 {rings.map(({ scale, href, label: labelText, dark }, idx) => {
                     const size = `calc(var(--nav-outer) * ${scale})`;
-                    const ringFill = dark ? "bg-background" : "bg-white shadow-md";
+                    const ringFill = dark ? "bg-background" : "bg-accent shadow-md";
                     const targetScale = waveScale(idx, hoveredRing);
                     const goldFadeDelay = ringOpenDelay(idx) + OPEN_DURATION * 0.45;
-                    const settledBorder = dark ? RING_BORDER_DARK : RING_BORDER_LIGHT;
+                    const settledBorder = dark ? RING_BORDER_DARK : RING_BORDER_GOLD;
 
                     const ringLink = (
                       <motion.div
@@ -353,7 +353,9 @@ export function BottomNav() {
                             animate={{
                               color:
                                 hoveredRing === idx
-                                  ? GOLD
+                                  ? dark
+                                    ? GOLD
+                                    : "#212121"
                                   : dark
                                     ? "#ffffff"
                                     : "#000000",
@@ -383,7 +385,7 @@ export function BottomNav() {
                 </div>
 
                 <div
-                  className="pointer-events-none absolute left-1/2 bottom-0 z-[80] flex -translate-x-1/2 translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-[3px] border-accent/70 bg-white p-[clamp(6px,1.6vw,12px)] shadow-md"
+                  className="pointer-events-none absolute left-1/2 bottom-0 z-[80] flex -translate-x-1/2 translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-[3px] border-accent bg-accent p-[clamp(6px,1.6vw,12px)] shadow-md"
                   style={{
                     width: `calc(var(--nav-outer) * ${centerScale * 1.7})`,
                     height: `calc(var(--nav-outer) * ${centerScale * 1.7})`,
