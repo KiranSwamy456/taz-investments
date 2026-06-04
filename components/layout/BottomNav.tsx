@@ -48,17 +48,17 @@ const TRIGGER_ZOOM_HOVER = {
 };
 
 function NavTriggerRings({ inverted }: { inverted: boolean }) {
-  const black = inverted ? "bg-white" : "bg-background";
-  const white = inverted ? "bg-background" : "bg-white";
+  const black = inverted ? "bg-accent" : "bg-background";
+  const gold = inverted ? "bg-background" : "bg-accent";
 
   return (
     <span className="relative block h-full w-full" aria-hidden>
       <span className={`absolute inset-0 rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[11%] rounded-full transition-colors duration-500 ease-out ${white}`} />
+      <span className={`absolute inset-[11%] rounded-full transition-colors duration-500 ease-out ${gold}`} />
       <span className={`absolute inset-[22%] rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[33%] rounded-full transition-colors duration-500 ease-out ${white}`} />
+      <span className={`absolute inset-[33%] rounded-full transition-colors duration-500 ease-out ${gold}`} />
       <span className={`absolute inset-[44%] rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[55%] rounded-full transition-colors duration-500 ease-out ${white}`} />
+      <span className={`absolute inset-[55%] rounded-full transition-colors duration-500 ease-out ${gold}`} />
       <span className={`absolute inset-[66%] rounded-full transition-colors duration-500 ease-out ${black}`} />
     </span>
   );
@@ -438,8 +438,8 @@ export function BottomNav() {
             <motion.span
               className={`flex h-full w-full items-center justify-center rounded-full p-[5px] shadow-lg ring-1 transition-colors duration-500 ease-out will-change-transform md:p-[6px] ${
                 triggerHovered
-                  ? "bg-background ring-white/15"
-                  : "bg-white ring-black/10"
+                  ? "bg-background ring-accent/30"
+                  : "bg-accent ring-black/10"
               }`}
               style={{ transformOrigin: "50% 50%" }}
               initial={false}

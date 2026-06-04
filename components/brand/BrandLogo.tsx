@@ -22,7 +22,10 @@ const sizes = {
   },
 } as const;
 
-/** Concentric ring mark — matches bottom nav icon */
+/** Concentric ring mark — gold + black brand icon */
+const BRAND_GOLD = "#d4af55";
+const BRAND_DARK = "#212121";
+
 function BrandMark({ className }: { className?: string }) {
   return (
     <svg
@@ -32,12 +35,12 @@ function BrandMark({ className }: { className?: string }) {
       className={cn("shrink-0", className)}
       aria-hidden
     >
-      <circle cx="20" cy="20" r="19" fill="white" />
-      <circle cx="20" cy="20" r="15.2" fill="#212121" />
-      <circle cx="20" cy="20" r="11.4" fill="white" />
-      <circle cx="20" cy="20" r="7.6" fill="#212121" />
-      <circle cx="20" cy="20" r="3.8" fill="white" />
-      <circle cx="20" cy="20" r="1.6" fill="#212121" />
+      <circle cx="20" cy="20" r="19" fill={BRAND_GOLD} />
+      <circle cx="20" cy="20" r="15.2" fill={BRAND_DARK} />
+      <circle cx="20" cy="20" r="11.4" fill={BRAND_GOLD} />
+      <circle cx="20" cy="20" r="7.6" fill={BRAND_DARK} />
+      <circle cx="20" cy="20" r="3.8" fill={BRAND_GOLD} />
+      <circle cx="20" cy="20" r="1.6" fill={BRAND_DARK} />
     </svg>
   );
 }
