@@ -27,7 +27,8 @@ const CASE_STUDIES = [
     id: 2,
     client: "NORTHLINE DATA",
     title: "Growth equity",
-    description: "Turning noisy metrics into a calm investor deck—one narrative, one model, and faster LP updates each quarter.",
+    description:
+      "Turning noisy metrics into a calm investor deck—one narrative, one model, and faster LP updates each quarter.",
     image: C[1],
     size: "small",
   },
@@ -85,7 +86,8 @@ const CASE_STUDIES = [
     id: 7,
     client: "EMBER CREDIT",
     title: "Lending pilot",
-    description: "Battling churn with better underwriting stories—tighter cohorts, clearer loss notes, and faster board reads.",
+    description:
+      "Battling churn with better underwriting stories—tighter cohorts, clearer loss notes, and faster board reads.",
     image: C[0],
     size: "large",
   },
@@ -93,7 +95,8 @@ const CASE_STUDIES = [
     id: 8,
     client: "FIELDSTONE SAAS",
     title: "ARR focus",
-    description: "Over four hundred teams use Fieldstone to track pipeline cash. We helped rebalance the story for enterprise buyers.",
+    description:
+      "Over four hundred teams use Fieldstone to track pipeline cash. We helped rebalance the story for enterprise buyers.",
     image: C[1],
     size: "small",
   },
@@ -101,7 +104,8 @@ const CASE_STUDIES = [
     id: 9,
     client: "LUMEN BIO",
     title: "Clinical step",
-    description: "We built Lumen’s raise narrative around one trial milestone—simple slides, one data room, fewer surprises for LPs.",
+    description:
+      "We built Lumen’s raise narrative around one trial milestone—simple slides, one data room, fewer surprises for LPs.",
     image: C[2],
     size: "small",
   },
@@ -125,7 +129,8 @@ const CASE_STUDIES = [
     id: 11,
     client: "SILVER MAPLE EV",
     title: "Charging net",
-    description: "We partnered on story and site for a regional EV charge roll-up—credible numbers and a clean path to scale.",
+    description:
+      "We partnered on story and site for a regional EV charge roll-up—credible numbers and a clean path to scale.",
     image: C[4],
     size: "small",
   },
@@ -133,7 +138,8 @@ const CASE_STUDIES = [
     id: 12,
     client: "PINNACLE PIPELINE",
     title: "RevOps",
-    description: "Pinnacle turned a messy sales stack into one forecast view. We helped them show it to buyers in one sitting.",
+    description:
+      "Pinnacle turned a messy sales stack into one forecast view. We helped them show it to buyers in one sitting.",
     image: C[5],
     size: "small",
   },
@@ -152,12 +158,17 @@ export function CaseStudies({ showIntro = true }: { showIntro?: boolean }) {
   return (
     <>
       {showIntro ? (
-        <section id="works" data-scroll-tone className="bg-background px-6 pb-16 pt-32 md:px-12">
+        <section
+          id="works"
+          data-scroll-tone
+          className="bg-background px-6 pb-16 pt-32 md:px-12"
+        >
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-2xl font-medium leading-relaxed text-muted-foreground md:text-3xl">
-                Investor-first, early capital that screens fairly, supports operators, and stays aligned from
-                first check through every growth round we join.
+                Investor-first, early capital that screens fairly, supports
+                operators, and stays aligned from first check through every
+                growth round we join.
               </p>
             </div>
           </div>
@@ -173,8 +184,11 @@ export function CaseStudies({ showIntro = true }: { showIntro?: boolean }) {
             {CASE_STUDIES.map((item, index) => {
               if ("type" in item && item.type === "quote") {
                 return (
-                  <div key={item.id} className="col-span-1 md:col-span-12 my-12">
-                    <div className="p-12 md:p-24 bg-card rounded-[2rem] border border-border">
+                  <div
+                    key={item.id}
+                    className="col-span-1 md:col-span-12 my-12"
+                  >
+                    <div className="group rounded-[2rem] border-solid border-[#C9A84C] border-l-[3px] border-t-[2px] border-r-[2px] border-b-[2px] bg-card p-12 transition-[border-width,box-shadow] duration-300 ease-out hover:border-l-[5px] hover:border-t-[3px] hover:border-r-[3px] hover:border-b-[3px] hover:shadow-[0_0_28px_rgba(201,168,76,0.35)] md:p-24">
                       <blockquote className="text-2xl md:text-4xl font-display font-medium leading-[1.2] max-w-4xl mx-auto text-center">
                         {`"${item.quote}"`}
                         <footer className="mt-8 text-sm font-sans font-bold tracking-widest text-muted-foreground uppercase">
@@ -200,7 +214,9 @@ export function CaseStudies({ showIntro = true }: { showIntro?: boolean }) {
               return (
                 <div key={study.id} className={`cursor-pointer ${colSpan}`}>
                   <ImageHoverBlock
-                    aspectClassName={isLarge ? "aspect-[16/10]" : "aspect-square"}
+                    aspectClassName={
+                      isLarge ? "aspect-[16/10]" : "aspect-square"
+                    }
                     revealDelay={(index % 4) * 0.08}
                     overlayPosition="top"
                     overlay={

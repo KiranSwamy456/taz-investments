@@ -82,8 +82,8 @@ function ringLabelFontSize(label: string): string {
     : "clamp(0.75rem, calc(var(--nav-outer) * 0.056), 1.05rem)";
 }
 
-const GOLD = "hsl(48, 97%, 48%)";
-const GOLD_BORDER = "hsl(48, 97%, 48%)";
+const GOLD = "#d4af55";
+const GOLD_BORDER = "#d4af55";
 const RING_BORDER_DARK = "rgba(255, 255, 255, 0.22)";
 const RING_BORDER_GOLD = "rgba(0, 0, 0, 0.2)";
 
