@@ -82,7 +82,6 @@ function ringLabelFontSize(label: string): string {
     : "clamp(0.75rem, calc(var(--nav-outer) * 0.056), 1.05rem)";
 }
 
-const GOLD = "#d4af55";
 const GOLD_BORDER = "#d4af55";
 const RING_BORDER_DARK = "rgba(255, 255, 255, 0.22)";
 const RING_BORDER_GOLD = "rgba(0, 0, 0, 0.2)";
@@ -136,39 +135,12 @@ function ringOpenDelay(ringIndex: number): number {
   return (rings.length - 1 - ringIndex) * STAGGER;
 }
 
-const labelVariants: Variants = {
-  hidden: (i: number) => ({
-    opacity: 0,
-    scale: 0.88,
-    transition: {
-      duration: 0.15,
-      delay: i * STAGGER * 0.5,
-      ease: EASE_OUT,
-    },
-  }),
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      opacity: {
-        duration: 0.28,
-        delay: ringOpenDelay(i) + OPEN_DURATION * 0.82,
-        ease: EASE_IN,
-      },
-      scale: {
-        duration: 0.28,
-        delay: ringOpenDelay(i) + OPEN_DURATION * 0.82,
-        ease: EASE_IN,
-      },
-    },
-  }),
-};
+/** Show labels after the outermost ring finishes expanding */
+const LABELS_SHOW_AFTER_MS = (ringOpenDelay(0) + OPEN_DURATION) * 1000 + 60;
 
 const labelLinkClass = (dark: boolean) =>
-  `block whitespace-nowrap text-center font-semibold tracking-wide leading-none transition-colors hover:text-accent ${
-    dark
-      ? "[text-shadow:0_1px_3px_rgba(0,0,0,0.85)]"
-      : "[text-shadow:0_1px_2px_rgba(255,255,255,0.9)]"
+  `block whitespace-nowrap text-center font-semibold tracking-wide leading-none ${
+    dark ? "text-white" : "text-black"
   }`;
 
 /** Subtle wave: hovered ring lifts most; neighbors ease in with delay. */
@@ -185,13 +157,28 @@ export function BottomNav() {
   const [open, setOpen] = useState(false);
   const [hoveredRing, setHoveredRing] = useState<number | null>(null);
   const [triggerHovered, setTriggerHovered] = useState(false);
+  const [showLabels, setShowLabels] = useState(false);
   const reduceMotion = useReducedMotion();
   const panelId = useId();
 
   const close = useCallback(() => {
-    setOpen(false);
+    setShowLabels(false);
     setHoveredRing(null);
+    setOpen(false);
   }, []);
+
+  useEffect(() => {
+    if (!open) {
+      setShowLabels(false);
+      return;
+    }
+    if (reduceMotion) {
+      setShowLabels(true);
+      return;
+    }
+    const timer = window.setTimeout(() => setShowLabels(true), LABELS_SHOW_AFTER_MS);
+    return () => window.clearTimeout(timer);
+  }, [open, reduceMotion]);
 
   useEffect(() => {
     if (!open) return;
@@ -317,73 +304,6 @@ export function BottomNav() {
                     );
                   })}
 
-                {/* Labels share one anchor so each name sits centered in its ring band */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[55] h-[calc(var(--nav-outer)*0.5)]">
-                  {rings.map(({ scale, href, label: labelText, dark }, idx) => {
-                    const nextScale =
-                      idx < rings.length - 1
-                        ? rings[idx + 1].scale
-                        : centerScale * 1.7;
-
-                    return (
-                      <motion.div
-                        key={`label-${href}`}
-                        className="pointer-events-none absolute left-1/2 -translate-x-1/2 translate-y-1/2"
-                        style={{ bottom: ringLabelBottom(scale, nextScale) }}
-                        custom={idx}
-                        variants={labelVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        onHoverStart={() => setHoveredRing(idx)}
-                        onHoverEnd={() =>
-                          setHoveredRing((h) => (h === idx ? null : h))
-                        }
-                      >
-                        <motion.span
-                          className="block"
-                          animate={{
-                            y: hoveredRing === idx ? -2 : 0,
-                            scale: hoveredRing === idx ? 1.06 : 1,
-                          }}
-                          transition={WAVE_SPRING}
-                        >
-                          <motion.span
-                            style={{ fontSize: ringLabelFontSize(labelText) }}
-                            animate={{
-                              color:
-                                hoveredRing === idx
-                                  ? dark
-                                    ? GOLD
-                                    : "#212121"
-                                  : dark
-                                    ? "#ffffff"
-                                    : "#000000",
-                            }}
-                            initial={{ color: GOLD }}
-                            transition={{
-                              color: {
-                                duration: 0.4,
-                                delay: ringOpenDelay(idx) + OPEN_DURATION * 0.82,
-                                ease: "easeOut",
-                              },
-                            }}
-                          >
-                            <Link
-                              href={href}
-                              onClick={close}
-                              className={`${labelLinkClass(dark)} pointer-events-auto px-3 py-1`}
-                              style={{ color: "inherit", fontSize: "inherit" }}
-                            >
-                              {labelText}
-                            </Link>
-                          </motion.span>
-                        </motion.span>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
                 <div
                   className="pointer-events-none absolute left-1/2 bottom-0 z-[80] flex -translate-x-1/2 translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-[3px] border-accent bg-accent p-[clamp(6px,1.6vw,12px)] shadow-md"
                   style={{
@@ -415,6 +335,40 @@ export function BottomNav() {
               </motion.div>
             ) : null}
           </AnimatePresence>
+
+          {/* Labels outside exit animation — hide instantly on close */}
+          {open && showLabels ? (
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[55] h-[calc(var(--nav-outer)*0.5)]">
+              {rings.map(({ scale, href, label: labelText, dark }, idx) => {
+                const nextScale =
+                  idx < rings.length - 1
+                    ? rings[idx + 1].scale
+                    : centerScale * 1.7;
+
+                return (
+                  <div
+                    key={`label-${href}`}
+                    className="pointer-events-none absolute left-1/2 -translate-x-1/2 translate-y-1/2"
+                    style={{ bottom: ringLabelBottom(scale, nextScale) }}
+                  >
+                    <Link
+                      href={href}
+                      onClick={close}
+                      data-nav-label
+                      className={`${labelLinkClass(dark)} pointer-events-auto px-3 py-1`}
+                      style={{ fontSize: ringLabelFontSize(labelText) }}
+                      onMouseEnter={() => setHoveredRing(idx)}
+                      onMouseLeave={() =>
+                        setHoveredRing((h) => (h === idx ? null : h))
+                      }
+                    >
+                      {labelText}
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
 
           <motion.button
             type="button"
