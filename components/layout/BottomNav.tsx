@@ -11,13 +11,13 @@ import {
 } from "framer-motion";
 import { X } from "lucide-react";
 
-/** Uniform band width (every gold + black ring same thickness). */
+/** Uniform band width (every black + white ring same thickness). */
 const RING_BAND = 0.18;
 
 /** Outside → inside: blogs, about us, portfolio, thesis, home */
 const rings = [
-  { scale: 1, href: "/blogs", label: "Blogs", dark: true },
-  { scale: 1 - RING_BAND, href: "/about", label: "About us", dark: false },
+  { scale: 1, href: "/blogs", label: "Press", dark: true },
+  { scale: 1 - RING_BAND, href: "/about", label: "Firm", dark: false },
   { scale: 1 - RING_BAND * 2, href: "/portfolio", label: "Portfolio", dark: true },
   { scale: 1 - RING_BAND * 3, href: "/thesis", label: "Thesis", dark: false },
   { scale: 1 - RING_BAND * 4, href: "/", label: "Home", dark: true },
@@ -48,17 +48,17 @@ const TRIGGER_ZOOM_HOVER = {
 };
 
 function NavTriggerRings({ inverted }: { inverted: boolean }) {
-  const black = inverted ? "bg-accent" : "bg-background";
-  const gold = inverted ? "bg-background" : "bg-accent";
+  const black = inverted ? "bg-white" : "bg-background";
+  const white = inverted ? "bg-background" : "bg-white";
 
   return (
     <span className="relative block h-full w-full" aria-hidden>
       <span className={`absolute inset-0 rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[11%] rounded-full transition-colors duration-500 ease-out ${gold}`} />
+      <span className={`absolute inset-[11%] rounded-full transition-colors duration-500 ease-out ${white}`} />
       <span className={`absolute inset-[22%] rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[33%] rounded-full transition-colors duration-500 ease-out ${gold}`} />
+      <span className={`absolute inset-[33%] rounded-full transition-colors duration-500 ease-out ${white}`} />
       <span className={`absolute inset-[44%] rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[55%] rounded-full transition-colors duration-500 ease-out ${gold}`} />
+      <span className={`absolute inset-[55%] rounded-full transition-colors duration-500 ease-out ${white}`} />
       <span className={`absolute inset-[66%] rounded-full transition-colors duration-500 ease-out ${black}`} />
     </span>
   );
@@ -77,14 +77,10 @@ function ringLabelBottom(ringScale: number, nextScale: number): string {
 }
 
 function ringLabelFontSize(label: string): string {
-  return label === "About us"
+  return label === "Portfolio"
     ? "clamp(0.65rem, calc(var(--nav-outer) * 0.048), 0.88rem)"
     : "clamp(0.75rem, calc(var(--nav-outer) * 0.056), 1.05rem)";
 }
-
-const GOLD_BORDER = "#d4af55";
-const RING_BORDER_DARK = "rgba(255, 255, 255, 0.22)";
-const RING_BORDER_GOLD = "rgba(0, 0, 0, 0.2)";
 
 const ringVariants: Variants = {
   hidden: (i: number) => ({
@@ -223,47 +219,22 @@ export function BottomNav() {
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 onMouseLeave={() => setHoveredRing(null)}
               >
-                {/* Soft gold glow (circular only — no scale to avoid square flash) */}
-                <motion.div
-                  className="pointer-events-none absolute left-1/2 bottom-0 z-[-1] aspect-square -translate-x-1/2 translate-y-1/2 rounded-full bg-accent/20 blur-[90px]"
-                  style={{ width: "var(--nav-outer)" }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [0, 0.5, 0.22] }}
-                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  transition={{
-                    duration: OPEN_DURATION + rings.length * STAGGER,
-                    times: [0, 0.5, 1],
-                    ease: EASE_IN,
-                  }}
-                />
-
                 {rings.map(({ scale, href, label: labelText, dark }, idx) => {
                     const size = `calc(var(--nav-outer) * ${scale})`;
-                    const ringFill = dark ? "bg-background" : "bg-accent shadow-md";
+                    const ringBody = `relative block h-full w-full overflow-hidden rounded-full ring-2 ${
+                      dark
+                        ? "bg-background ring-white/20"
+                        : "bg-white shadow-md ring-black/25"
+                    }`;
                     const targetScale = waveScale(idx, hoveredRing);
-                    const goldFadeDelay = ringOpenDelay(idx) + OPEN_DURATION * 0.45;
-                    const settledBorder = dark ? RING_BORDER_DARK : RING_BORDER_GOLD;
 
                     const ringLink = (
-                      <motion.div
-                        className={`pointer-events-auto h-full w-full overflow-hidden rounded-full border-[3px] ${ringFill}`}
-                        initial={{ borderColor: GOLD_BORDER }}
-                        animate={{ borderColor: settledBorder }}
-                        transition={{
-                          borderColor: {
-                            duration: 0.5,
-                            delay: goldFadeDelay,
-                            ease: "easeOut",
-                          },
-                        }}
-                      >
-                        <Link
-                          href={href}
-                          onClick={close}
-                          className="block h-full w-full rounded-full"
-                          aria-label={labelText}
-                        />
-                      </motion.div>
+                      <Link
+                        href={href}
+                        onClick={close}
+                        className={`pointer-events-auto ${ringBody}`}
+                        aria-label={labelText}
+                      />
                     );
 
                     return (
@@ -305,7 +276,7 @@ export function BottomNav() {
                   })}
 
                 <div
-                  className="pointer-events-none absolute left-1/2 bottom-0 z-[80] flex -translate-x-1/2 translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-[3px] border-accent bg-accent p-[clamp(6px,1.6vw,12px)] shadow-md"
+                  className="pointer-events-none absolute left-1/2 bottom-0 z-[80] flex -translate-x-1/2 translate-y-1/2 items-center justify-center overflow-hidden rounded-full bg-white p-[clamp(6px,1.6vw,12px)] shadow-md"
                   style={{
                     width: `calc(var(--nav-outer) * ${centerScale * 1.7})`,
                     height: `calc(var(--nav-outer) * ${centerScale * 1.7})`,
@@ -327,7 +298,7 @@ export function BottomNav() {
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.96 }}
                     transition={HOVER_SPRING}
-                    className="pointer-events-auto flex shrink-0 items-center justify-center rounded-full bg-background text-accent"
+                    className="pointer-events-auto flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-background text-white"
                   >
                     <X className="h-[38%] w-[38%]" strokeWidth={2.5} />
                   </motion.button>
@@ -355,6 +326,7 @@ export function BottomNav() {
                       href={href}
                       onClick={close}
                       data-nav-label
+                      data-nav-label-dark={dark ? "true" : "false"}
                       className={`${labelLinkClass(dark)} pointer-events-auto px-3 py-1`}
                       style={{ fontSize: ringLabelFontSize(labelText) }}
                       onMouseEnter={() => setHoveredRing(idx)}
@@ -392,8 +364,8 @@ export function BottomNav() {
             <motion.span
               className={`flex h-full w-full items-center justify-center rounded-full p-[5px] shadow-lg ring-1 transition-colors duration-500 ease-out will-change-transform md:p-[6px] ${
                 triggerHovered
-                  ? "bg-background ring-accent/30"
-                  : "bg-accent ring-black/10"
+                  ? "bg-background ring-white/15"
+                  : "bg-white ring-black/10"
               }`}
               style={{ transformOrigin: "50% 50%" }}
               initial={false}

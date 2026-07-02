@@ -249,9 +249,19 @@ main > section[data-scroll-tone] [data-scroll-text] *:not(svg):not(path):not(cir
 }
 
 /* Bottom nav labels: solid text only, no scroll gradient or shadow */
-[data-nav-label] {
-  color: inherit !important;
-  -webkit-text-fill-color: currentColor !important;
+[data-nav-label][data-nav-label-dark="true"] {
+  color: hsl(0 0% 100%) !important;
+  -webkit-text-fill-color: hsl(0 0% 100%) !important;
+  text-shadow: none !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  opacity: 1 !important;
+}
+
+[data-nav-label][data-nav-label-dark="false"] {
+  color: hsl(0 0% 9%) !important;
+  -webkit-text-fill-color: hsl(0 0% 9%) !important;
   text-shadow: none !important;
   background-image: none !important;
   background-clip: unset !important;

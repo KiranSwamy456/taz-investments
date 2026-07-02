@@ -5,8 +5,8 @@ const NAV = [
   { href: "/", label: "Home" },
   { href: "/thesis", label: "Thesis" },
   { href: "/portfolio", label: "Portfolio" },
-  { href: "/about", label: "About us" },
-  { href: "/blogs", label: "Blogs" },
+  { href: "/about", label: "Firm" },
+  { href: "/blogs", label: "Press" },
 ] as const;
 
 export function Header() {
