@@ -6,7 +6,7 @@ import { ThesisContent } from "@/components/sections/ThesisContent";
 export const metadata: Metadata = {
   title: "Thesis — Taz Investments",
   description:
-    "Investment philosophy, focus sectors, stage and geography, typical cheque size, and founder criteria.",
+    "We back the founders building the next chapter of Saudi Arabia's economy — and we've been doing it before it was obvious.",
 };
 
 export default function ThesisPage() {
@@ -14,8 +14,10 @@ export default function ThesisPage() {
     <SiteShell>
       <PageHero
         label="Thesis"
-        title="How we decide where capital goes."
-        description="Investment philosophy, focus sectors, stage and geography, typical cheque size, and founder criteria — in one place for founders and LPs."
+        title="The future of MENA isn't waiting."
+        titleLine2="Neither are we."
+        titleSingleLine
+        description="We back the founders building the next chapter of Saudi Arabia's economy — and we've been doing it before it was obvious."
       />
       <ThesisContent />
     </SiteShell>

@@ -1,22 +1,18 @@
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
 import { ClientLogos } from "@/components/sections/ClientLogos";
-import { CaseStudies } from "@/components/sections/CaseStudies";
-import { Services } from "@/components/sections/Services";
-import { Studio } from "@/components/sections/Studio";
+import { HomePhilosophy } from "@/components/sections/HomePhilosophy";
+import { HomeSpotlights } from "@/components/sections/HomeSpotlights";
 import { ContactCTA } from "@/components/sections/ContactCTA";
-import { Blog } from "@/components/sections/Blog";
 
 export default function Home() {
   return (
     <SiteShell showHeader={false}>
       <Hero />
       <ClientLogos />
-      <CaseStudies />
-      <Services />
-      <Studio />
+      <HomePhilosophy />
+      <HomeSpotlights />
       <ContactCTA />
-        <Blog showIntro={false} />
     </SiteShell>
   );
 }

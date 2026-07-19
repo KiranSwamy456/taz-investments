@@ -279,6 +279,16 @@ main > section[data-scroll-tone] a[data-solid-control],
   -webkit-background-clip: unset !important;
 }
 
+[data-solid-control="white"],
+main > section[data-scroll-tone] a[data-solid-control="white"],
+.min-h-screen > footer a[data-solid-control="white"] {
+  color: hsl(0 0% 100%) !important;
+  -webkit-text-fill-color: hsl(0 0% 100%) !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+
 [data-solid-control] svg {
   color: currentColor;
 }
@@ -296,10 +306,26 @@ nav span.font-display {
 }
 
 main section[data-hero] :is(h1, p),
-main section[data-hero] h1 :is(span, strong, em, b, i),
+main section[data-hero] h1 :is(span, strong, em, b, i):not(.text-accent),
 main section[data-hero] h1 span:has(svg) {
   color: hsl(0 0% 100%) !important;
   -webkit-text-fill-color: unset !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+
+main section[data-hero] .text-accent {
+  color: hsl(var(--accent)) !important;
+  -webkit-text-fill-color: hsl(var(--accent)) !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+
+main section[data-hero] .text-muted-foreground {
+  color: hsl(var(--muted-foreground)) !important;
+  -webkit-text-fill-color: hsl(var(--muted-foreground)) !important;
   background-image: none !important;
   background-clip: unset !important;
   -webkit-background-clip: unset !important;

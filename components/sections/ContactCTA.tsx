@@ -1,23 +1,27 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export function ContactCTA() {
   return (
-    <section id="contact" data-scroll-tone className="py-24 px-6 md:px-12 bg-background border-t border-border">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-card rounded-[2rem] p-12 md:p-24 border border-border flex flex-col md:flex-row items-center justify-between gap-12 group cursor-pointer hover:border-accent/50 transition-colors duration-500">
-          <div className="flex-1">
-            <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground mb-8 block">START A ROUND</span>
-            <h2 className="text-5xl md:text-7xl lg:text-[8vw] font-display font-medium leading-[0.9] tracking-tight group-hover:text-accent transition-colors duration-500">
-              Raise with us.
-            </h2>
-          </div>
-
-          <div className="flex-shrink-0">
-            <div className="w-24 h-24 md:w-40 md:h-40 rounded-full border border-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:text-accent-foreground transition-all duration-500">
-              <ArrowRight className="w-8 h-8 md:w-12 md:h-12 transform -rotate-45 group-hover:rotate-0 transition-transform duration-500" />
-            </div>
-          </div>
-        </div>
+    <section
+      id="contact"
+      className="border-t border-border bg-accent px-6 py-20 md:px-12 md:py-28"
+    >
+      <div className="mx-auto max-w-3xl text-center md:text-left">
+        <span className="mb-4 block text-xs font-bold uppercase tracking-widest text-white/80">
+          Raise With Us
+        </span>
+        <h2 className="font-display text-3xl font-medium leading-tight tracking-tight text-white md:text-4xl lg:text-5xl">
+          Are you building the next great company in MENA?
+        </h2>
+        <Link
+          href="/thesis"
+          data-solid-control
+          className="mt-10 inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-90"
+        >
+          Raise With Us
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
     </section>
   );

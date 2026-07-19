@@ -8,7 +8,6 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { Play } from "lucide-react";
 import Image from "next/image";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { investmentImages } from "@/lib/investmentMedia";
@@ -26,24 +25,41 @@ const line = {
   }),
 };
 
-function HeroVisual({ className, sizes }: { className?: string; sizes: string }) {
+function HeroVisual({
+  className,
+  sizes,
+}: {
+  className?: string;
+  sizes: string;
+}) {
   return (
     <div className={className}>
-      <div className="relative aspect-square w-full" style={{ transformStyle: "preserve-3d" }}>
+      <div
+        className="relative aspect-square w-full"
+        style={{ transformStyle: "preserve-3d" }}
+      >
         {/* Rings expand inside → out */}
         <motion.div
           className="absolute inset-[-6%] rounded-full border border-white/[0.12] shadow-[inset_0_0_60px_rgba(255,255,255,0.06)]"
           style={{ transform: "translateZ(40px)" }}
           initial={{ scale: 0.82, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: REVEAL_DURATION, delay: 0.28, ease: REVEAL_EASE }}
+          transition={{
+            duration: REVEAL_DURATION,
+            delay: 0.28,
+            ease: REVEAL_EASE,
+          }}
         />
         <motion.div
           className="absolute inset-[-2%] rounded-full border-2 border-white/10 bg-gradient-to-br from-white/[0.08] via-transparent to-black/50"
           style={{ transform: "translateZ(24px)" }}
           initial={{ scale: 0.88, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: REVEAL_DURATION, delay: 0.14, ease: REVEAL_EASE }}
+          transition={{
+            duration: REVEAL_DURATION,
+            delay: 0.14,
+            ease: REVEAL_EASE,
+          }}
         />
 
         {/* Circular mask opens from center; image zooms in */}
@@ -82,14 +98,35 @@ export function Hero() {
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [10, -10]), SPRING);
-  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-14, 14]), SPRING);
-  const moveX = useSpring(useTransform(pointerX, [-0.5, 0.5], [-36, 36]), SPRING);
-  const moveY = useSpring(useTransform(pointerY, [-0.5, 0.5], [-28, 28]), SPRING);
-  const glowX = useSpring(useTransform(pointerX, [-0.5, 0.5], [-50, 50]), { ...SPRING, stiffness: 80 });
-  const glowY = useSpring(useTransform(pointerY, [-0.5, 0.5], [-40, 40]), { ...SPRING, stiffness: 80 });
+  const rotateX = useSpring(
+    useTransform(pointerY, [-0.5, 0.5], [10, -10]),
+    SPRING,
+  );
+  const rotateY = useSpring(
+    useTransform(pointerX, [-0.5, 0.5], [-14, 14]),
+    SPRING,
+  );
+  const moveX = useSpring(
+    useTransform(pointerX, [-0.5, 0.5], [-36, 36]),
+    SPRING,
+  );
+  const moveY = useSpring(
+    useTransform(pointerY, [-0.5, 0.5], [-28, 28]),
+    SPRING,
+  );
+  const glowX = useSpring(useTransform(pointerX, [-0.5, 0.5], [-50, 50]), {
+    ...SPRING,
+    stiffness: 80,
+  });
+  const glowY = useSpring(useTransform(pointerY, [-0.5, 0.5], [-40, 40]), {
+    ...SPRING,
+    stiffness: 80,
+  });
 
-  const innerRotate = useSpring(useTransform(pointerX, [-0.5, 0.5], [-4, 4]), SPRING);
+  const innerRotate = useSpring(
+    useTransform(pointerX, [-0.5, 0.5], [-4, 4]),
+    SPRING,
+  );
   const transform = useMotionTemplate`translateX(${moveX}px) translateY(${moveY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
   const onMove = useCallback(
@@ -100,7 +137,7 @@ export function Hero() {
       pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
       pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
     },
-    [pointerX, pointerY]
+    [pointerX, pointerY],
   );
 
   const onLeave = useCallback(() => {
@@ -145,7 +182,11 @@ export function Hero() {
       {/* Desktop — load reveal + cursor parallax */}
       <motion.div
         className="pointer-events-none absolute right-[4%] top-1/2 z-[1] hidden w-[min(44vw,540px)] -translate-y-1/2 md:block"
-        style={{ transform, rotate: innerRotate, transformStyle: "preserve-3d" }}
+        style={{
+          transform,
+          rotate: innerRotate,
+          transformStyle: "preserve-3d",
+        }}
       >
         <HeroVisual sizes="(max-width: 768px) 80vw, 540px" />
       </motion.div>
@@ -157,47 +198,33 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-end">
         <motion.h1
-          className="mb-10 font-display text-[clamp(3rem,11vw,9.5rem)] font-medium leading-[0.88] tracking-tight text-white md:mb-14"
+          className="mb-10 font-display text-[clamp(2.5rem,9vw,7.5rem)] font-medium leading-[0.95] tracking-tight md:mb-14"
           initial="hidden"
           animate="visible"
         >
-          <motion.span className="block" variants={line} custom={0}>
-            Investment
+          <motion.span className="block text-white" variants={line} custom={0}>
+            Before the Proof.
           </motion.span>
-          <motion.span className="block" variants={line} custom={1}>
-            office
-          </motion.span>
-          <motion.span className="mt-2 flex items-center gap-4 md:mt-4 md:gap-8" variants={line} custom={2}>
-            <motion.span
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-white/[0.04] md:h-20 md:w-20"
-              whileHover={{ scale: 1.06, borderColor: "rgba(255,255,255,0.45)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 18 }}
-            >
-              <Play className="h-5 w-5 translate-x-[2px] fill-current md:h-8 md:w-8" />
-            </motion.span>
-            for founders
+          <motion.span className="mt-1 block text-accent md:mt-2" variants={line} custom={1}>
+            Beyond the Capital.
           </motion.span>
         </motion.h1>
 
-        <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.85, duration: 0.7, ease: REVEAL_EASE }}
-              className="max-w-xs text-xs font-semibold uppercase tracking-widest text-white md:text-sm"
-            >
-              Seed & Series A capital for operators building real revenue
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.95, duration: 0.7, ease: REVEAL_EASE }}
-              className="max-w-[220px] text-left text-xs font-semibold uppercase tracking-widest text-white md:text-right md:text-sm"
-            >
-              Trusted by 150+ founders, family offices & institutional LPs
-            </motion.p>
-          </div>
+        <div className="border-t border-white/10 pt-8 md:pt-10">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.75, duration: 0.7, ease: REVEAL_EASE }}
+            className="max-w-2xl"
+          >
+            <p className="font-display text-xl font-medium leading-snug text-white md:text-2xl lg:text-3xl">
+              We don&apos;t wait for proof. We are the proof.
+            </p>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+              TIC backs the founders reshaping Saudi Arabia and the MENA region — early, with conviction, and
+              with far more than a cheque.
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>

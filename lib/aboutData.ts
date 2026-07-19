@@ -1,74 +1,65 @@
 import { investmentImages } from "@/lib/investmentMedia";
 
-export const VALUES = [
+export const HOW_WE_THINK = [
   {
-    title: "Investor-first",
-    body: "We screen fairly, write in plain language, and keep reserves for follow-on so alignment survives the next round.",
+    title: "Nation-scale problems produce world-class companies.",
+    body: "The founders building in MENA aren't solving niche problems for narrow markets. They're rebuilding procurement infrastructure for a construction boom that is reshaping a country's physical landscape. They're reinventing how a generation learns. They're rethinking how entire industries move. That's not a regional play with a ceiling. That's a global opportunity with a home-ground advantage — and we back it like one.",
   },
   {
-    title: "Honest operators",
-    body: "We push back when models drift. The best founders want partners who will say no clearly — and help fix what matters.",
+    title: "Capital without context is just noise.",
+    body: "We've seen what happens when foreign capital arrives in MENA with a Western playbook and no regional instinct. It burns fast and exits quietly. Our team has been operating across Saudi Arabia, the UAE, India, and beyond for long enough to know the difference between a pattern that works here and one that just worked somewhere else. We don't import assumptions. We build from the ground up.",
   },
   {
-    title: "Speed with discipline",
-    body: "Two meetings or less for a clear yes or no. Diligence is tight, not endless — timelines you can plan around.",
+    title: "The best investments are partnerships, not transactions.",
+    body: "A cheque is the easy part. What matters — especially in MENA, where relationships move markets — is what comes after the wire. Go-to-market strategy, customer introductions, co-investor relationships, regulatory navigation, hiring advice: we've been through it ourselves, on both sides of the table. We show up at the moments that actually matter.",
+  },
+] as const;
+
+export const WHAT_WE_LOOK_FOR = [
+  {
+    title: "Our investment criteria",
+    body: "We back founders at the early to growth stage with ticket sizes ranging from $50,000 to $10 million — depending on stage, team composition, and the scale of the opportunity. We invest in Innovation that is scalable and replicable across geographies. We look for great team capabilities — not just a great idea, but the right people to execute it at speed. And we prioritise businesses that are solving real problems in sectors where the regional context gives them a structural advantage that is hard for outside competitors to replicate.",
+    image: investmentImages.thesisCheque,
+    imageAlt: "Investment criteria — early to growth stage capital",
   },
   {
-    title: "Calm in volatility",
-    body: "Markets move; boards still need clear numbers. We stay available when the plan shifts and the story has to change.",
+    title: "Where we focus",
+    body: "Our active investment sectors span Construction Tech, EdTech and Human Capital, Fintech and Financial Infrastructure, CleanTech and Circular Economy, Creative Economy, Commerce Technology, AgriTech, IoT and Smart Technology, and Deep Tech. Our geographic focus is Saudi Arabia primary — with active portfolio presence across Jordan, India, UAE, Kenya, Zambia, and 20+ countries through our GreenForest Solutions investment.",
+    image: investmentImages.thesisGeography,
+    imageAlt: "Geographic and sector focus across MENA and beyond",
   },
 ] as const;
 
 export const TEAM = [
   {
-    id: "jordan",
-    name: "Jordan Ellis",
-    role: "Managing Partner",
-    bio: "Former operator in fintech infrastructure. Leads sourcing, pricing, and governance across seed and Series A.",
-    image: investmentImages.team1,
+    id: "rahul",
+    name: "Rahul Bhardwaj",
+    role: "Co-founder & Managing Partner",
+    location: "Hyderabad, India",
+    bio: "An alumnus of London Business School with a career built at the intersection of early-stage entrepreneurship and business incubation. He has worked extensively with founders in technology and innovation — advising on development, structuring business models, and building the strategic growth frameworks that turn a promising idea into a fundable company. His ability to envision the future of business and make decisive strategic calls from that vision is a defining characteristic of how TIC evaluates opportunity and structures its support for portfolio companies.",
   },
   {
-    id: "maya",
-    name: "Maya Okonkwo",
-    role: "Partner",
-    bio: "Ex-strategy lead at a growth fund. Runs diligence, memos, and portfolio support for B2B and healthcare names.",
-    image: investmentImages.team2,
+    id: "waleed",
+    name: "Waleed",
+    role: "Co-founder & Managing Partner",
+    location: "Saudi Arabia · Turkey · Japan",
+    bio: "An Oxford University graduate with a career that spans partnership in the Riyadh Metro Development project and a senior role in Virgin Telecommunication. He has built businesses and relationships in some of the region's most strategically important environments — developing the business acumen and customer-trust-first approach that defines TIC's relationship with founders across Jordan, Turkey, and Egypt. His experience with large-scale infrastructure projects gives TIC a unique perspective on how governments, institutions, and investors interact in complex markets.",
   },
   {
-    id: "sam",
-    name: "Sam Rivera",
-    role: "Principal",
-    bio: "Product and data background. Works with founders on metrics, board decks, and follow-on planning.",
-    image: investmentImages.team3,
-  },
-  {
-    id: "elena",
-    name: "Elena Vasquez",
-    role: "VP, Investor Relations",
-    bio: "Keeps LPs and founders aligned on reporting — quarterly updates without the scramble.",
-    image: investmentImages.c,
+    id: "ramadan",
+    name: "Ramadan Ibrahim",
+    role: "Manager Operations, Saudi Arabia",
+    location: "Saudi Arabia",
+    bio: "More than two decades in International Trade as a Purchasing Manager — a career that began in trade and expanded into start-ups, construction, and the energy sector. He is known for strategic planning and for an exceptional ability to read future trade trends and make tactical decisions that generate optimum value. That talent for spotting opportunity before the market prices it in — and acting on it with precision — is exactly the kind of instinct TIC brings to its investment process. He is the firm's anchor for institutional and industrial relationships.",
   },
 ] as const;
 
-export const ADVISORS = [
-  {
-    id: "advisor-1",
-    name: "Dr. James Whitfield",
-    org: "Former CFO, Tier-1 bank",
-    bio: "Advises on regulated fintech narratives, risk disclosure, and board-ready financial sections.",
-  },
-  {
-    id: "advisor-2",
-    name: "Priya Natarajan",
-    org: "Healthcare operator",
-    bio: "Helps portfolio teams navigate clinical milestones, payer dynamics, and enterprise sales cycles.",
-  },
-  {
-    id: "advisor-3",
-    name: "Marcus Holt",
-    org: "Logistics & industrial",
-    bio: "Supports ops-heavy companies on margin bridges, carrier relationships, and scale planning.",
-  },
+export const BY_THE_NUMBERS = [
+  { value: "17", label: "Portfolio companies" },
+  { value: "6", label: "Countries with active operations" },
+  { value: "10+", label: "Sectors backed" },
+  { value: "$50K – $2M", label: "Ticket size range" },
+  { value: "20+", label: "Countries in portfolio network" },
 ] as const;
 
 export const WHO_WE_BACK = [
