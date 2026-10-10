@@ -91,7 +91,7 @@ export function HomePhilosophy() {
                   src={item.image}
                   alt={item.label}
                   fill
-                  className="object-cover"
+                  className="object-cover grayscale"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </ImageHoverBlock>

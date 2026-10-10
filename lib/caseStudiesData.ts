@@ -297,39 +297,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     cta: "Building in EdTech or consumer hardware? Raise With Us.",
   },
   {
-    slug: "7nodes",
-    name: "7Nodes",
-    initials: "7N",
-    sector: "Technology Services",
-    stage: "Growth",
-    geo: "India / Global",
-    image: investmentImages.focusDeepTech,
-    metrics: [{ value: "80+", label: "Projects delivered" }],
-    sections: [
-      {
-        title: "The Context",
-        body: "Finding a technology partner who executes without hand-holding — who builds to specification, ships on time, and doesn't leave technical debt behind — is one of the hardest operational problems for early-stage companies. The technology services market is full of vendors who overpromise and underdeliver. 7Nodes is the partner TIC trusts to deliver quality work without enterprise pricing.",
-      },
-      {
-        title: "The Company",
-        body: "7Nodes Technology Solutions is a full-stack technology services company based in Kerala, India, founded in 2015. The team delivers web, mobile, cloud, and AI projects for startups and enterprise clients across entertainment, retail, healthcare, and enterprise sectors — with a client base spanning Asia, the Gulf, and beyond. 80+ projects delivered. Technology partners in Canada, Australia, and the UAE. Stack includes Ruby on Rails, PHP, Android, iOS, and Java. They handle the full product lifecycle from build to launch — combining the execution capability of a mature firm with the responsiveness of a founder-led team.",
-      },
-      {
-        title: "Why TIC Backed Them",
-        body: "Portfolio companies need builders, not just strategists. 7Nodes is an enabling infrastructure company — the kind that makes other companies possible. When a founder in the portfolio needs to ship a feature, rebuild a backend, or launch a mobile product, they need a partner who delivers consistently and understands early-stage company needs. That's why TIC backed them.",
-      },
-      {
-        title: "What We Did Together",
-        body: "7Nodes has become a trusted technology execution partner within the Cocoon Ventures and TIC ecosystem. TIC facilitated introductions between 7Nodes and portfolio companies that needed development support — creating a flywheel where 7Nodes gained a pipeline of quality clients, and portfolio companies gained a development partner that already understands their ecosystem context. Those introductions have also opened commercial relationships in the UAE and the broader GCC, markets 7Nodes was not previously reaching.",
-      },
-      {
-        title: "Where They're Headed",
-        body: "7Nodes is expanding its Gulf and international client base while deepening capabilities in AI-integrated product development — their fastest-growing area of client demand. With a proven delivery record across 80+ projects and existing technology partnerships in Canada, Australia, and the UAE, the company is positioned to serve the next wave of digital product builds across MENA and South Asia.",
-      },
-    ],
-    cta: "Need a technology build partner? Talk to us.",
-  },
-  {
     slug: "cocoon-nest",
     name: "Cocoon Nest",
     initials: "CN",

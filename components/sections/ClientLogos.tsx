@@ -10,7 +10,6 @@ const LOGO_ROWS = [
   [
     { name: "AirMeLive", className: "text-xl font-serif lowercase" },
     { name: "Pluck Fresh", className: "text-xl font-bold tracking-tight" },
-    { name: "7Nodes", className: "text-xl font-mono uppercase tracking-widest" },
     { name: "H.O.P.E", className: "text-xl font-display font-bold" },
     { name: "Markat", className: "text-xl font-sans font-black tracking-tighter uppercase" },
     { name: "Cocoon Nest", className: "text-xl font-medium tracking-tight" },

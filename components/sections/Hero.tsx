@@ -1,20 +1,9 @@
 "use client";
 
-import { useCallback, useRef } from "react";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import Image from "next/image";
+import { motion } from "framer-motion";
 import { BrandLogo } from "@/components/brand/BrandLogo";
-import { investmentImages } from "@/lib/investmentMedia";
 
-const SPRING = { stiffness: 120, damping: 22, mass: 0.8 };
 const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const REVEAL_DURATION = 1.5;
 
 const line = {
   hidden: { opacity: 0, y: 48 },
@@ -25,133 +14,11 @@ const line = {
   }),
 };
 
-function HeroVisual({
-  className,
-  sizes,
-}: {
-  className?: string;
-  sizes: string;
-}) {
-  return (
-    <div className={className}>
-      <div
-        className="relative aspect-square w-full"
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        {/* Rings expand inside → out */}
-        <motion.div
-          className="absolute inset-[-6%] rounded-full border border-white/[0.12] shadow-[inset_0_0_60px_rgba(255,255,255,0.06)]"
-          style={{ transform: "translateZ(40px)" }}
-          initial={{ scale: 0.82, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            duration: REVEAL_DURATION,
-            delay: 0.28,
-            ease: REVEAL_EASE,
-          }}
-        />
-        <motion.div
-          className="absolute inset-[-2%] rounded-full border-2 border-white/10 bg-gradient-to-br from-white/[0.08] via-transparent to-black/50"
-          style={{ transform: "translateZ(24px)" }}
-          initial={{ scale: 0.88, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            duration: REVEAL_DURATION,
-            delay: 0.14,
-            ease: REVEAL_EASE,
-          }}
-        />
-
-        {/* Circular mask opens from center; image zooms in */}
-        <motion.div
-          className="relative h-full w-full overflow-hidden rounded-full shadow-2xl ring-1 ring-white/10"
-          style={{ transform: "translateZ(0px)" }}
-          initial={{ clipPath: "circle(0% at 50% 50%)" }}
-          animate={{ clipPath: "circle(71% at 50% 50%)" }}
-          transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
-        >
-          <motion.div
-            className="relative h-full w-full"
-            initial={{ scale: 0.68 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: REVEAL_DURATION * 1.08, ease: REVEAL_EASE }}
-          >
-            <Image
-              src={investmentImages.hero}
-              alt="Markets and portfolio context"
-              fill
-              priority
-              className="object-cover"
-              sizes={sizes}
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/50" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_50%)]" />
-          </motion.div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-
-  const rotateX = useSpring(
-    useTransform(pointerY, [-0.5, 0.5], [10, -10]),
-    SPRING,
-  );
-  const rotateY = useSpring(
-    useTransform(pointerX, [-0.5, 0.5], [-14, 14]),
-    SPRING,
-  );
-  const moveX = useSpring(
-    useTransform(pointerX, [-0.5, 0.5], [-36, 36]),
-    SPRING,
-  );
-  const moveY = useSpring(
-    useTransform(pointerY, [-0.5, 0.5], [-28, 28]),
-    SPRING,
-  );
-  const glowX = useSpring(useTransform(pointerX, [-0.5, 0.5], [-50, 50]), {
-    ...SPRING,
-    stiffness: 80,
-  });
-  const glowY = useSpring(useTransform(pointerY, [-0.5, 0.5], [-40, 40]), {
-    ...SPRING,
-    stiffness: 80,
-  });
-
-  const innerRotate = useSpring(
-    useTransform(pointerX, [-0.5, 0.5], [-4, 4]),
-    SPRING,
-  );
-  const transform = useMotionTemplate`translateX(${moveX}px) translateY(${moveY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
-  const onMove = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
-      pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
-    },
-    [pointerX, pointerY],
-  );
-
-  const onLeave = useCallback(() => {
-    pointerX.set(0);
-    pointerY.set(0);
-  }, [pointerX, pointerY]);
-
   return (
     <section
-      ref={sectionRef}
       data-hero
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      className="relative flex min-h-[92vh] flex-col justify-end overflow-hidden px-6 pb-28 pt-20 md:px-12 md:pb-32 [perspective:1400px]"
+      className="relative flex min-h-[92vh] flex-col justify-end overflow-hidden px-6 pb-28 pt-20 md:px-12 md:pb-32"
     >
       <motion.div
         className="absolute left-6 top-8 z-20 md:left-12 md:top-10"
@@ -162,40 +29,6 @@ export function Hero() {
         <BrandLogo size="md" />
       </motion.div>
 
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute right-[5%] top-[38%] z-0 h-[min(55vw,520px)] w-[min(55vw,520px)] rounded-full bg-accent/20 blur-[100px]"
-        style={{ x: glowX, y: glowY }}
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.6, ease: REVEAL_EASE }}
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute right-[18%] top-[42%] z-0 h-[min(40vw,380px)] w-[min(40vw,380px)] rounded-full bg-white/[0.04] blur-[80px]"
-        style={{ x: glowY, y: glowX }}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.8, delay: 0.1, ease: REVEAL_EASE }}
-      />
-
-      {/* Desktop — load reveal + cursor parallax */}
-      <motion.div
-        className="pointer-events-none absolute right-[4%] top-1/2 z-[1] hidden w-[min(44vw,540px)] -translate-y-1/2 md:block"
-        style={{
-          transform,
-          rotate: innerRotate,
-          transformStyle: "preserve-3d",
-        }}
-      >
-        <HeroVisual sizes="(max-width: 768px) 80vw, 540px" />
-      </motion.div>
-
-      {/* Mobile — same inside-out zoom, no tilt */}
-      <div className="pointer-events-none relative z-[1] mx-auto mb-10 w-[min(72vw,320px)] md:hidden">
-        <HeroVisual sizes="80vw" />
-      </div>
-
       <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-end">
         <motion.h1
           className="mb-10 font-display text-[clamp(2.5rem,9vw,7.5rem)] font-medium leading-[0.95] tracking-tight md:mb-14"
@@ -205,7 +38,11 @@ export function Hero() {
           <motion.span className="block text-white" variants={line} custom={0}>
             Before the Proof.
           </motion.span>
-          <motion.span className="mt-1 block text-accent md:mt-2" variants={line} custom={1}>
+          <motion.span
+            className="mt-1 block text-accent md:mt-2"
+            variants={line}
+            custom={1}
+          >
             Beyond the Capital.
           </motion.span>
         </motion.h1>
@@ -221,8 +58,8 @@ export function Hero() {
               We don&apos;t wait for proof. We are the proof.
             </p>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
-              TIC backs the founders reshaping Saudi Arabia and the MENA region — early, with conviction, and
-              with far more than a cheque.
+              TIC backs the founders reshaping Saudi Arabia and the MENA region
+              — early, with conviction, and with far more than a cheque.
             </p>
           </motion.div>
         </div>
