@@ -5,6 +5,8 @@ const u = (path: string, w = 1600) =>
 export const investmentImages = {
   /** Riyadh skyline — Saudi / MENA focus (replaces trading-chart stock) */
   hero: u("photo-1674822858255-fcc093a1ef43", 1400),
+  /** Partnership handshake — capital as relationship, not just a cheque */
+  heroHandshake: u("photo-1521791136064-7986c2920216", 1400),
   team1: u("photo-1454165804606-c3d57bc86b40", 1200),
   team2: u("photo-1552664730-d307ca884978", 1200),
   team3: u("photo-1556761175-5973dc0f32e7", 1200),
