@@ -1,9 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { BrandLogo } from "@/components/brand/BrandLogo";
-import { investmentImages } from "@/lib/investmentMedia";
 import { hoverShake, softHoverShake } from "@/components/sections/home-1/shake";
 
 const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -17,90 +15,126 @@ const line = {
   }),
 };
 
-function PartnershipVisual({ sizes }: { sizes: string }) {
+const HW = 54;
+const TH = 24;
+const SH = 52;
+const ROW_GAP = 22;
+
+/** Gold stack, top → base. Proof sits clear underneath as empty cubes. */
+const GOLD_ROWS = [
+  { label: "Ecosystem", count: 1 },
+  { label: "Operators", count: 2 },
+  { label: "Network", count: 3 },
+  { label: "Capital", count: 4 },
+] as const;
+
+function cubePoints(cx: number, top: number) {
+  const peak = `${cx},${top}`;
+  const right = `${cx + HW},${top + TH}`;
+  const mid = `${cx},${top + TH * 2}`;
+  const left = `${cx - HW},${top + TH}`;
+  const leftBase = `${cx - HW},${top + TH + SH}`;
+  const front = `${cx},${top + TH * 2 + SH}`;
+  const rightBase = `${cx + HW},${top + TH + SH}`;
+  return {
+    top: `${peak} ${right} ${mid} ${left}`,
+    left: `${left} ${mid} ${front} ${leftBase}`,
+    right: `${right} ${mid} ${front} ${rightBase}`,
+  };
+}
+
+function SupportStack() {
+  const max = 5;
+  const pad = 8;
+  const width = max * HW * 2 + pad * 2;
+  const goldHeight = GOLD_ROWS.length * SH + TH * 2;
+  const height = goldHeight + ROW_GAP + SH + TH * 2 + pad;
+  const originX = pad;
+
+  const cubes: {
+    key: string;
+    cx: number;
+    top: number;
+    ghost: boolean;
+    delay: number;
+  }[] = [];
+
+  GOLD_ROWS.forEach((row, rowIndex) => {
+    const top = pad + rowIndex * SH;
+    const shift = (max - row.count) * HW;
+    for (let i = 0; i < row.count; i += 1) {
+      cubes.push({
+        key: `${row.label}-${i}`,
+        cx: originX + shift + HW + i * HW * 2,
+        top,
+        ghost: false,
+        delay: 0.55 - rowIndex * 0.1 + i * 0.04,
+      });
+    }
+  });
+
+  const proofTop = pad + GOLD_ROWS.length * SH + ROW_GAP;
+  for (let i = 0; i < max; i += 1) {
+    cubes.push({
+      key: `proof-${i}`,
+      cx: originX + HW + i * HW * 2,
+      top: proofTop,
+      ghost: true,
+      delay: 0.12 + i * 0.04,
+    });
+  }
+
+  const ordered = [...cubes].sort((a, b) => b.top - a.top || a.cx - b.cx);
+
   return (
-    <motion.div
-      className="relative aspect-square w-full"
-      initial={{ opacity: 0, scale: 0.82, rotate: -6 }}
-      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-      transition={{ duration: 1.1, delay: 0.2, ease: REVEAL_EASE }}
-      whileHover={{ scale: 1.03 }}
-    >
-      {/* Soft gold bloom */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-[-8%] rounded-full bg-accent/25 blur-3xl"
-        animate={{ opacity: [0.35, 0.7, 0.35], scale: [0.95, 1.08, 0.95] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Outer dashed ring — spins slowly */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-[-10%] rounded-full border border-dashed border-accent/45"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-      />
-
-      {/* Mid ring — counter-spins */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-[-4%] rounded-full border border-white/15"
-        animate={{ rotate: -360, scale: [1, 1.02, 1] }}
-        transition={{
-          rotate: { duration: 40, repeat: Infinity, ease: "linear" },
-          scale: { duration: 3.2, repeat: Infinity, ease: "easeInOut" },
-        }}
-      />
-
-      {/* Image disc — gentle float */}
-      <motion.div
-        className="relative h-full w-full overflow-hidden rounded-full ring-2 ring-accent/40 shadow-[0_0_60px_hsl(43_60%_58%/0.25)]"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+    <div className="relative w-full">
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        className="mx-auto h-auto w-full"
+        role="img"
+        aria-label="Support stacked beyond capital, before proof"
       >
-        <motion.div
-          className="relative h-full w-full"
-          animate={{ scale: [1, 1.06, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <Image
-            src={investmentImages.heroHandshake}
-            alt="Partnership handshake — backing founders with more than capital"
-            fill
-            priority
-            className="object-cover object-[center_35%]"
-            sizes={sizes}
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-black/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,hsl(43_60%_58%/0.22),transparent_50%)]" />
+        {ordered.map((cube) => {
+          const faces = cubePoints(cube.cx, cube.top);
+          return (
+            <motion.g
+              key={cube.key}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: cube.delay, duration: 0.45, ease: REVEAL_EASE }}
+            >
+              {cube.ghost ? (
+                <>
+                  <polygon points={faces.left} fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="1.6" />
+                  <polygon points={faces.right} fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.6" />
+                  <polygon points={faces.top} fill="none" stroke="rgba(255,255,255,0.38)" strokeWidth="1.6" />
+                </>
+              ) : (
+                <>
+                  <polygon points={faces.left} fill="#d4af55" stroke="#141414" strokeWidth="1.4" />
+                  <polygon points={faces.right} fill="#8d6e2f" stroke="#141414" strokeWidth="1.4" />
+                  <polygon points={faces.top} fill="#f6e7b8" stroke="#141414" strokeWidth="1.4" />
+                </>
+              )}
+            </motion.g>
+          );
+        })}
+      </svg>
 
-        {/* Sweeping light across the disc */}
-        <motion.div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-          initial={{ x: "-120%" }}
-          animate={{ x: ["-120%", "120%"] }}
-          transition={{
-            duration: 3.2,
-            repeat: Infinity,
-            repeatDelay: 2.4,
-            ease: "easeInOut",
-          }}
-        />
-      </motion.div>
-
-      {/* Accent orbiting around the disc */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-[-10%]"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      >
-        <span className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_14px_hsl(43_60%_58%)]" />
-      </motion.div>
-    </motion.div>
+      <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        {GOLD_ROWS.map((row) => (
+          <span
+            key={row.label}
+            className="text-[11px] font-bold uppercase tracking-[0.16em] text-accent"
+          >
+            {row.label}
+          </span>
+        ))}
+      </div>
+      <p className="mt-2 text-center text-[11px] font-bold uppercase tracking-[0.16em] text-white/40">
+        Proof — we don&apos;t wait
+      </p>
+    </div>
   );
 }
 
@@ -166,9 +200,9 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Image — close to text */}
-        <div className="order-1 w-full shrink-0 md:order-2 md:w-[min(38vw,360px)] lg:w-[380px]">
-          <PartnershipVisual sizes="(max-width: 768px) 70vw, 380px" />
+        {/* Support stack — the tagline, not a handshake photo */}
+        <div className="order-1 w-full shrink-0 md:order-2 md:w-[min(48vw,560px)]">
+          <SupportStack />
         </div>
       </div>
     </section>
