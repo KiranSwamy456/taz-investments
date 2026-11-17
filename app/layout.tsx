@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ScrollCopyOpacity } from "@/components/ScrollCopyOpacity";
 import { SiteOpening } from "@/components/SiteOpening";
 
 export const metadata: Metadata = {
@@ -24,7 +23,6 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-background text-foreground antialiased overflow-x-hidden">
         <SiteOpening />
-        <ScrollCopyOpacity />
         {children}
       </body>
     </html>

@@ -18,7 +18,7 @@ export const HOW_WE_THINK = [
 export const WHAT_WE_LOOK_FOR = [
   {
     title: "Our investment criteria",
-    body: "We back founders at the early to growth stage with ticket sizes ranging from $50,000 to $10 million — depending on stage, team composition, and the scale of the opportunity. We invest in Innovation that is scalable and replicable across geographies. We look for great team capabilities — not just a great idea, but the right people to execute it at speed. And we prioritise businesses that are solving real problems in sectors where the regional context gives them a structural advantage that is hard for outside competitors to replicate.",
+    body: "We back founders at the early to growth stage with ticket sizes of up to one million USD — depending on stage, team composition, and the scale of the opportunity. We invest in Innovation that is scalable and replicable across geographies. We look for great team capabilities — not just a great idea, but the right people to execute it at speed. And we prioritise businesses that are solving real problems in sectors where the regional context gives them a structural advantage that is hard for outside competitors to replicate.",
     image: investmentImages.thesisCheque,
     imageAlt: "Investment criteria — early to growth stage capital",
   },

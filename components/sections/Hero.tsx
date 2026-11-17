@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BrandLogo } from "@/components/brand/BrandLogo";
+import SideRays from "@/components/backgrounds/SideRays";
 
 const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -20,6 +21,29 @@ export function Hero() {
       data-hero
       className="relative flex min-h-[92vh] flex-col justify-end overflow-hidden px-6 pb-28 pt-20 md:px-12 md:pb-32"
     >
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <SideRays
+          origin="top-right"
+          rayColor1="#FFFFFF"
+          rayColor2="#F5E6C8"
+          blend={0.55}
+          speed={1.4}
+          intensity={1.65}
+          spread={1.8}
+          density={6}
+          sharpness={0.45}
+          falloff={1.45}
+          glow={1.15}
+          saturation={0.75}
+          dust={0.15}
+          followMouse
+          mouseInfluence={0.45}
+          intro
+          opacity={0.9}
+          className="h-full w-full"
+        />
+      </div>
+
       <motion.div
         className="absolute left-6 top-8 z-20 md:left-12 md:top-10"
         initial={{ opacity: 0, y: -10 }}

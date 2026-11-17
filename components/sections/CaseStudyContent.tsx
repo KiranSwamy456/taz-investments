@@ -7,9 +7,39 @@ import { ImageHoverBlock } from "@/components/ImageHoverBlock";
 import { RaiseForm } from "@/components/sections/RaiseForm";
 import type { CaseStudy } from "@/lib/caseStudiesData";
 
+const TOP_SECTION_TITLES = new Set(["The Context", "The Company"]);
+
+function StorySection({
+  title,
+  body,
+  index,
+}: {
+  title: string;
+  body: string;
+  index: number;
+}) {
+  return (
+    <section
+      data-scroll-tone
+      className={`border-t border-border px-6 py-16 md:px-12 md:py-24 ${
+        index % 2 === 1 ? "bg-card" : "bg-background"
+      }`}
+    >
+      <div className="mx-auto max-w-3xl">
+        <h2 className="font-display text-2xl font-medium text-accent md:text-3xl">{title}</h2>
+        <p className="mt-6 text-base leading-relaxed text-muted-foreground md:text-lg">{body}</p>
+      </div>
+    </section>
+  );
+}
+
 export function CaseStudyContent({ study }: { study: CaseStudy }) {
+  const topSections = study.sections.filter((s) => TOP_SECTION_TITLES.has(s.title));
+  const restSections = study.sections.filter((s) => !TOP_SECTION_TITLES.has(s.title));
+
   return (
     <>
+      {/* 1 — Title text */}
       <section data-scroll-tone className="border-b border-border px-6 pb-16 pt-28 md:px-12 md:pb-20 md:pt-32">
         <div className="mx-auto max-w-7xl">
           <Link
@@ -40,54 +70,67 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
               </div>
             </div>
           </div>
-
-          <div className="mt-12 md:mt-16">
-            <ImageHoverBlock
-              aspectClassName="aspect-[16/9] md:aspect-[21/9]"
-              revealDelay={0}
-              className="w-full"
-            >
-              <Image
-                src={study.image}
-                alt={study.name}
-                fill
-                priority
-                className="object-cover"
-                sizes="100vw"
-              />
-            </ImageHoverBlock>
-          </div>
         </div>
       </section>
 
-      {study.metrics && study.metrics.length > 0 ? (
-        <section data-scroll-tone className="border-b border-border px-6 py-12 md:px-12 md:py-16">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:grid-cols-3">
-            {study.metrics.map((m) => (
-              <div key={m.label} className="border-l-[3px] border-accent pl-5">
-                <p className="font-display text-3xl font-medium text-accent md:text-4xl">{m.value}</p>
-                <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                  {m.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {study.sections.map((section, index) => (
-        <section
+      {/* 2–3 — The Context & The Company */}
+      {topSections.map((section, index) => (
+        <StorySection
           key={section.title}
-          data-scroll-tone
-          className={`border-t border-border px-6 py-16 md:px-12 md:py-24 ${
-            index % 2 === 1 ? "bg-card" : "bg-background"
-          }`}
-        >
-          <div className="mx-auto max-w-3xl">
-            <h2 className="font-display text-2xl font-medium text-accent md:text-3xl">{section.title}</h2>
-            <p className="mt-6 text-base leading-relaxed text-muted-foreground md:text-lg">{section.body}</p>
-          </div>
-        </section>
+          title={section.title}
+          body={section.body}
+          index={index}
+        />
+      ))}
+
+      {/* 4 — Image */}
+      <section data-scroll-tone className="border-b border-border px-6 py-12 md:px-12 md:py-16">
+        <div className="mx-auto max-w-7xl">
+          <ImageHoverBlock
+            aspectClassName="aspect-[16/9] md:aspect-[21/9]"
+            revealDelay={0}
+            className="w-full"
+          >
+            <Image
+              src={study.image}
+              alt={study.name}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </ImageHoverBlock>
+        </div>
+      </section>
+
+      {/* Metrics */}
+      <section data-scroll-tone className="border-b border-border px-6 py-12 md:px-12 md:py-16">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:grid-cols-3">
+          {(study.metrics && study.metrics.length > 0
+            ? study.metrics
+            : [
+                { value: study.sector, label: "Sector" },
+                { value: study.stage, label: "Stage" },
+                { value: study.geo, label: "Geography" },
+              ]
+          ).map((m) => (
+            <div key={m.label} className="border-l-[3px] border-accent pl-5">
+              <p className="font-display text-3xl font-medium text-accent md:text-4xl">{m.value}</p>
+              <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                {m.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {restSections.map((section, index) => (
+        <StorySection
+          key={section.title}
+          title={section.title}
+          body={section.body}
+          index={index + topSections.length}
+        />
       ))}
 
       {study.quote ? (

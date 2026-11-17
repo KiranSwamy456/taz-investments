@@ -20,7 +20,7 @@ const CRITERIA = [
   },
   {
     label: "Ticket Size",
-    body: "$50,000 – $10,000,000 USD · Depends on venture stage, team composition, and idea novelty · Mostly angel and seed rounds.",
+    body: "Up to one million USD · Depends on venture stage, team composition, and idea novelty · Mostly angel and seed rounds.",
     image: investmentImages.thesisCheque,
   },
   {
