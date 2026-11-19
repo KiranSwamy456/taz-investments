@@ -32,24 +32,35 @@ export const WHAT_WE_LOOK_FOR = [
 
 export const TEAM = [
   {
+    id: "waleed",
+    name: "Waleed Ahmed",
+    role: "Managing Partner",
+    location: "Saudi Arabia · Turkey · Japan",
+    image: "/waleed_ahmed.jpg",
+    bio: "An Oxford University graduate with a career that spans partnership in the Riyadh Metro Development project and a senior role in Virgin Telecommunication. He has built businesses and relationships in some of the region's most strategically important environments — developing the business acumen and customer-trust-first approach that defines TIC's relationship with founders across Jordan, Turkey, and Egypt. His experience with large-scale infrastructure projects gives TIC a unique perspective on how governments, institutions, and investors interact in complex markets.",
+  },
+  {
     id: "rahul",
     name: "Rahul Bhardwaj",
-    role: "Co-founder & Managing Partner",
+    role: "Managing Partner",
     location: "Hyderabad, India",
+    image: "/rahul_bhardwaj.jpg",
     bio: "An alumnus of London Business School with a career built at the intersection of early-stage entrepreneurship and business incubation. He has worked extensively with founders in technology and innovation — advising on development, structuring business models, and building the strategic growth frameworks that turn a promising idea into a fundable company. His ability to envision the future of business and make decisive strategic calls from that vision is a defining characteristic of how TIC evaluates opportunity and structures its support for portfolio companies.",
   },
   {
-    id: "waleed",
-    name: "Waleed",
-    role: "Co-founder & Managing Partner",
-    location: "Saudi Arabia · Turkey · Japan",
-    bio: "An Oxford University graduate with a career that spans partnership in the Riyadh Metro Development project and a senior role in Virgin Telecommunication. He has built businesses and relationships in some of the region's most strategically important environments — developing the business acumen and customer-trust-first approach that defines TIC's relationship with founders across Jordan, Turkey, and Egypt. His experience with large-scale infrastructure projects gives TIC a unique perspective on how governments, institutions, and investors interact in complex markets.",
+    id: "stephanos",
+    name: "Stephanos Iossifidis",
+    role: "Investment Associate",
+    location: "",
+    image: "/stephanos_Iossifidis.jpg",
+    bio: "Stephanos joined the investment team at Taz in 2025. He works across the full lifecycle of sector-agnostic investments, from pre-seed to pre-Series A, in Saudi Arabia and the wider MENA region.\n\nPrior to joining Taz, Stephanos was a Strategist at the Suu Foundation, where he advised the CEO on international affairs and government engagement. Earlier in his career, he worked in legal research, European policy and geopolitics.\n\nStephanos holds a First-Class degree from the University of Oxford, a Diploma in Law with Distinction from the University of Law, and an FMVA certification in financial modelling and analysis.",
   },
   {
     id: "ramadan",
     name: "Ramadan Ibrahim",
     role: "Manager Operations, Saudi Arabia",
     location: "Saudi Arabia",
+    image: null,
     bio: "More than two decades in International Trade as a Purchasing Manager — a career that began in trade and expanded into start-ups, construction, and the energy sector. He is known for strategic planning and for an exceptional ability to read future trade trends and make tactical decisions that generate optimum value. That talent for spotting opportunity before the market prices it in — and acting on it with precision — is exactly the kind of instinct TIC brings to its investment process. He is the firm's anchor for institutional and industrial relationships.",
   },
 ] as const;

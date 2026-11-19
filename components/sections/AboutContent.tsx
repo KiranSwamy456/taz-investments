@@ -151,12 +151,37 @@ export function AboutContent() {
                 key={person.id}
                 className="border-t border-accent/80 py-10 first:border-t first:pt-10 md:py-12"
               >
-                <h3 className="font-display text-2xl font-medium tracking-tight text-white md:text-3xl">
-                  {person.name}
-                </h3>
-                <p className="mt-2 text-sm font-bold uppercase tracking-widest text-accent">{person.role}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{person.location}</p>
-                <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">{person.bio}</p>
+                <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
+                  {person.image ? (
+                    <div className="relative h-40 w-40 shrink-0 overflow-hidden sm:h-44 sm:w-44">
+                      <Image
+                        src={person.image}
+                        alt={person.name}
+                        fill
+                        className="object-cover object-top"
+                        sizes="176px"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display text-2xl font-medium tracking-tight text-white md:text-3xl">
+                      {person.name}
+                    </h3>
+                    <p className="mt-2 text-sm font-bold uppercase tracking-widest text-accent">
+                      {person.role}
+                    </p>
+                    {person.location ? (
+                      <p className="mt-2 text-sm text-muted-foreground">{person.location}</p>
+                    ) : null}
+                    {person.bio ? (
+                      <div className="mt-5 space-y-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+                        {person.bio.split("\n\n").map((paragraph) => (
+                          <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
               </article>
             ))}
           </div>

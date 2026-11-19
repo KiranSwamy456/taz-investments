@@ -18,7 +18,12 @@ const RING_BAND = 0.18;
 const rings = [
   { scale: 1, href: "/blogs", label: "Press", dark: true },
   { scale: 1 - RING_BAND, href: "/about", label: "Firm", dark: false },
-  { scale: 1 - RING_BAND * 2, href: "/portfolio", label: "Portfolio", dark: true },
+  {
+    scale: 1 - RING_BAND * 2,
+    href: "/portfolio",
+    label: "Portfolio",
+    dark: true,
+  },
   { scale: 1 - RING_BAND * 3, href: "/thesis", label: "Thesis", dark: false },
   { scale: 1 - RING_BAND * 4, href: "/", label: "Home", dark: true },
 ] as const;
@@ -53,13 +58,27 @@ function NavTriggerRings({ inverted }: { inverted: boolean }) {
 
   return (
     <span className="relative block h-full w-full" aria-hidden>
-      <span className={`absolute inset-0 rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[11%] rounded-full transition-colors duration-500 ease-out ${white}`} />
-      <span className={`absolute inset-[22%] rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[33%] rounded-full transition-colors duration-500 ease-out ${white}`} />
-      <span className={`absolute inset-[44%] rounded-full transition-colors duration-500 ease-out ${black}`} />
-      <span className={`absolute inset-[55%] rounded-full transition-colors duration-500 ease-out ${white}`} />
-      <span className={`absolute inset-[66%] rounded-full transition-colors duration-500 ease-out ${black}`} />
+      <span
+        className={`absolute inset-0 rounded-full transition-colors duration-500 ease-out ${black}`}
+      />
+      <span
+        className={`absolute inset-[11%] rounded-full transition-colors duration-500 ease-out ${white}`}
+      />
+      <span
+        className={`absolute inset-[22%] rounded-full transition-colors duration-500 ease-out ${black}`}
+      />
+      <span
+        className={`absolute inset-[33%] rounded-full transition-colors duration-500 ease-out ${white}`}
+      />
+      <span
+        className={`absolute inset-[44%] rounded-full transition-colors duration-500 ease-out ${black}`}
+      />
+      <span
+        className={`absolute inset-[55%] rounded-full transition-colors duration-500 ease-out ${white}`}
+      />
+      <span
+        className={`absolute inset-[66%] rounded-full transition-colors duration-500 ease-out ${black}`}
+      />
     </span>
   );
 }
@@ -172,7 +191,10 @@ export function BottomNav() {
       setShowLabels(true);
       return;
     }
-    const timer = window.setTimeout(() => setShowLabels(true), LABELS_SHOW_AFTER_MS);
+    const timer = window.setTimeout(
+      () => setShowLabels(true),
+      LABELS_SHOW_AFTER_MS,
+    );
     return () => window.clearTimeout(timer);
   }, [open, reduceMotion]);
 
@@ -188,18 +210,19 @@ export function BottomNav() {
   }, [open, close]);
 
   const navOuterStyle = {
-    ["--nav-outer" as string]: "clamp(320px, 76vw, 600px)",
+    ["--nav-outer" as string]:
+      "clamp(280px, min(76vw, calc(100vw - 1.5rem)), 600px)",
   } as CSSProperties;
 
   return (
     <>
-      {/* Anchor: menu + trigger share one center (icon spot), not viewport bottom edge */}
+      {/* Full-width fixed bar so expanded rings never clip against a narrow parent */}
       <div
-        className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center md:bottom-10"
+        className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center md:bottom-10"
         style={navOuterStyle}
       >
         <div
-          className="relative overflow-visible"
+          className="pointer-events-none relative overflow-visible"
           style={{
             width: "var(--nav-outer)",
             height: "calc(var(--nav-outer) * 0.5 + 2.5rem)",
@@ -220,60 +243,60 @@ export function BottomNav() {
                 onMouseLeave={() => setHoveredRing(null)}
               >
                 {rings.map(({ scale, href, label: labelText, dark }, idx) => {
-                    const size = `calc(var(--nav-outer) * ${scale})`;
-                    const ringBody = `relative block h-full w-full overflow-hidden rounded-full ring-2 ${
-                      dark
-                        ? "bg-background ring-white/20"
-                        : "bg-white shadow-md ring-black/25"
-                    }`;
-                    const targetScale = waveScale(idx, hoveredRing);
+                  const size = `calc(var(--nav-outer) * ${scale})`;
+                  const ringBody = `relative block h-full w-full overflow-hidden rounded-full ring-2 ${
+                    dark
+                      ? "bg-background ring-white/20"
+                      : "bg-white shadow-md ring-black/25"
+                  }`;
+                  const targetScale = waveScale(idx, hoveredRing);
 
-                    const ringLink = (
-                      <Link
-                        href={href}
-                        onClick={close}
-                        className={`pointer-events-auto ${ringBody}`}
-                        aria-label={labelText}
-                      />
-                    );
+                  const ringLink = (
+                    <Link
+                      href={href}
+                      onClick={close}
+                      className={`pointer-events-auto ${ringBody}`}
+                      aria-label={labelText}
+                    />
+                  );
 
-                    return (
-                      <div
-                        key={href + labelText}
-                        className="pointer-events-none absolute left-1/2 bottom-0 z-0 -translate-x-1/2 translate-y-1/2 overflow-hidden rounded-full"
-                        style={{ width: size, height: size }}
+                  return (
+                    <div
+                      key={href + labelText}
+                      className="pointer-events-none absolute left-1/2 bottom-0 z-0 -translate-x-1/2 translate-y-1/2 overflow-hidden rounded-full"
+                      style={{ width: size, height: size }}
+                    >
+                      <motion.div
+                        className="h-full w-full overflow-hidden rounded-full will-change-transform"
+                        style={{ transformOrigin: "50% 50%" }}
+                        custom={idx}
+                        variants={ringVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        onHoverStart={() => setHoveredRing(idx)}
+                        onHoverEnd={() =>
+                          setHoveredRing((h) => (h === idx ? null : h))
+                        }
                       >
                         <motion.div
-                          className="h-full w-full overflow-hidden rounded-full will-change-transform"
+                          className="h-full w-full overflow-hidden rounded-full"
                           style={{ transformOrigin: "50% 50%" }}
-                          custom={idx}
-                          variants={ringVariants}
-                          initial="hidden"
-                          animate="visible"
-                          exit="hidden"
-                          onHoverStart={() => setHoveredRing(idx)}
-                          onHoverEnd={() =>
-                            setHoveredRing((h) => (h === idx ? null : h))
-                          }
+                          animate={{ scale: targetScale }}
+                          transition={{
+                            ...WAVE_SPRING,
+                            delay:
+                              hoveredRing === null
+                                ? 0
+                                : Math.abs(idx - hoveredRing) * 0.07,
+                          }}
                         >
-                          <motion.div
-                            className="h-full w-full overflow-hidden rounded-full"
-                            style={{ transformOrigin: "50% 50%" }}
-                            animate={{ scale: targetScale }}
-                            transition={{
-                              ...WAVE_SPRING,
-                              delay:
-                                hoveredRing === null
-                                  ? 0
-                                  : Math.abs(idx - hoveredRing) * 0.07,
-                            }}
-                          >
-                            {ringLink}
-                          </motion.div>
+                          {ringLink}
                         </motion.div>
-                      </div>
-                    );
-                  })}
+                      </motion.div>
+                    </div>
+                  );
+                })}
 
                 <div
                   className="pointer-events-none absolute left-1/2 bottom-0 z-[80] flex -translate-x-1/2 translate-y-1/2 items-center justify-center overflow-hidden rounded-full bg-white p-[clamp(6px,1.6vw,12px)] shadow-md"
@@ -357,7 +380,7 @@ export function BottomNav() {
             className={`absolute left-1/2 bottom-0 z-[70] flex h-[4.25rem] w-[4.25rem] -translate-x-1/2 translate-y-1/2 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black md:h-[4.75rem] md:w-[4.75rem] ${
               open
                 ? "pointer-events-none scale-0 opacity-0"
-                : "scale-100 opacity-100"
+                : "pointer-events-auto scale-100 opacity-100"
             }`}
             style={{ transformOrigin: "50% 100%" }}
           >

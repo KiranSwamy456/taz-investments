@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { ImageHoverBlock } from "@/components/ImageHoverBlock";
 import { RaiseForm } from "@/components/sections/RaiseForm";
 import type { CaseStudy } from "@/lib/caseStudiesData";
+import { getPortfolioGallery } from "@/lib/portfolioGallery";
 
 const TOP_SECTION_TITLES = new Set(["The Context", "The Company"]);
 
@@ -36,6 +37,7 @@ function StorySection({
 export function CaseStudyContent({ study }: { study: CaseStudy }) {
   const topSections = study.sections.filter((s) => TOP_SECTION_TITLES.has(s.title));
   const restSections = study.sections.filter((s) => !TOP_SECTION_TITLES.has(s.title));
+  const gallery = getPortfolioGallery(study.slug);
 
   return (
     <>
@@ -102,6 +104,29 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
           </ImageHoverBlock>
         </div>
       </section>
+
+      {gallery.length > 0 ? (
+        <section data-scroll-tone className="border-b border-border px-6 py-12 md:px-12 md:py-16">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {gallery.map((src, index) => (
+              <ImageHoverBlock
+                key={src}
+                aspectClassName="aspect-[4/3]"
+                revealDelay={index * 0.04}
+                className="w-full"
+              >
+                <Image
+                  src={src}
+                  alt={`${study.name} portfolio ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+              </ImageHoverBlock>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Metrics */}
       <section data-scroll-tone className="border-b border-border px-6 py-12 md:px-12 md:py-16">
