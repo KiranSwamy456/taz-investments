@@ -5,18 +5,47 @@ import { ArrowRight } from "lucide-react";
 
 const STAGES = ["Pre-seed", "Seed", "Series A", "Growth", "Other"] as const;
 
-export function RaiseForm() {
+export function RaiseForm({ source }: { source?: string }) {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
-    // Placeholder until a backend / form service is wired
-    window.setTimeout(() => {
-      setSending(false);
+    setError(null);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch("/api/raise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(data.get("name") || ""),
+          email: String(data.get("email") || ""),
+          company: String(data.get("company") || ""),
+          stage: String(data.get("stage") || ""),
+          link: String(data.get("link") || ""),
+          message: String(data.get("message") || ""),
+          source: source || "Website raise form",
+        }),
+      });
+
+      const payload = (await res.json().catch(() => ({}))) as { error?: string };
+
+      if (!res.ok) {
+        throw new Error(payload.error || "Something went wrong. Please try again.");
+      }
+
+      form.reset();
       setSubmitted(true);
-    }, 600);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   if (submitted) {
@@ -125,6 +154,8 @@ export function RaiseForm() {
           placeholder="What you're building, and why now."
         />
       </label>
+
+      {error ? <p className="text-sm text-red-400">{error}</p> : null}
 
       <button
         type="submit"

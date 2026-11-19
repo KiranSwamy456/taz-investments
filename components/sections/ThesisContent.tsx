@@ -297,7 +297,7 @@ export function ThesisContent() {
             </p>
           </div>
           <div className="lg:col-span-7">
-            <RaiseForm />
+            <RaiseForm source="Thesis · Raise with us" />
           </div>
         </div>
       </section>
