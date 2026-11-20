@@ -58,9 +58,9 @@ export const TEAM = [
   {
     id: "ramadan",
     name: "Ramadan Ibrahim",
-    role: "Manager Operations, Saudi Arabia",
+    role: "Manager Operations and Chairman office",
     location: "Saudi Arabia",
-    image: null,
+    image: "/Ramadan_Ibrahim.jpg",
     bio: "More than two decades in International Trade as a Purchasing Manager — a career that began in trade and expanded into start-ups, construction, and the energy sector. He is known for strategic planning and for an exceptional ability to read future trade trends and make tactical decisions that generate optimum value. That talent for spotting opportunity before the market prices it in — and acting on it with precision — is exactly the kind of instinct TIC brings to its investment process. He is the firm's anchor for institutional and industrial relationships.",
   },
 ] as const;
