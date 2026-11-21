@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -111,6 +112,8 @@ export function SiteOpening() {
       >
         <motion.div
           className="flex flex-col items-center"
+          variants={logoLine}
+          custom={0}
           animate={{
             opacity: reveal ? 0 : 1,
             scale: reveal ? 0.88 : 1,
@@ -118,20 +121,14 @@ export function SiteOpening() {
           }}
           transition={{ duration: 0.5, ease: EASE }}
         >
-          <motion.span
-            className="font-display text-[clamp(2.75rem,13vw,5.5rem)] font-bold leading-none tracking-tight"
-            variants={logoLine}
-            custom={0}
-          >
-            taz
-          </motion.span>
-          <motion.span
-            className="mt-3 text-[clamp(0.7rem,2.4vw,1rem)] font-semibold uppercase tracking-[0.34em] text-white/75"
-            variants={logoLine}
-            custom={1}
-          >
-            investments
-          </motion.span>
+          <Image
+            src="/TAZ-Investment-white.png"
+            alt="Taz Investment"
+            width={640}
+            height={160}
+            priority
+            className="h-[clamp(3.25rem,12vw,6.5rem)] w-auto object-contain"
+          />
         </motion.div>
       </motion.div>
     </motion.div>

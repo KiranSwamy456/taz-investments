@@ -1,52 +1,22 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const sizes = {
-  sm: {
-    mark: "h-9 w-9",
-    title: "text-[1.35rem] md:text-[1.65rem]",
-    subtitle: "text-[0.55rem] md:text-[0.62rem]",
-    gap: "gap-2.5",
-  },
-  md: {
-    mark: "h-11 w-11 md:h-12 md:w-12",
-    title: "text-[1.5rem] md:text-[1.85rem]",
-    subtitle: "text-[0.58rem] md:text-[0.65rem]",
-    gap: "gap-3",
-  },
-  lg: {
-    mark: "h-14 w-14 md:h-16 md:w-16",
-    title: "text-[2rem] md:text-[2.5rem]",
-    subtitle: "text-[0.65rem] md:text-[0.75rem]",
-    gap: "gap-3.5",
-  },
+  sm: { className: "h-7 w-auto md:h-8", width: 160, height: 40 },
+  md: { className: "h-9 w-auto md:h-11", width: 220, height: 55 },
+  lg: { className: "h-12 w-auto md:h-16", width: 320, height: 80 },
 } as const;
 
-/** Concentric ring mark — white + black, matches bottom nav icon */
-const BRAND_LIGHT = "#ffffff";
-const BRAND_DARK = "#212121";
-
-function BrandMark({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 40 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn("shrink-0", className)}
-      aria-hidden
-    >
-      <circle cx="20" cy="20" r="19" fill={BRAND_LIGHT} />
-      <circle cx="20" cy="20" r="15.2" fill={BRAND_DARK} />
-      <circle cx="20" cy="20" r="11.4" fill={BRAND_LIGHT} />
-      <circle cx="20" cy="20" r="7.6" fill={BRAND_DARK} />
-      <circle cx="20" cy="20" r="3.8" fill={BRAND_LIGHT} />
-      <circle cx="20" cy="20" r="1.6" fill={BRAND_DARK} />
-    </svg>
-  );
-}
+const LOGO = {
+  white: "/TAZ-Investment-white.png",
+  black: "/TAZ-Investment-black.png",
+} as const;
 
 type BrandLogoProps = {
   size?: keyof typeof sizes;
+  /** Use white on dark backgrounds, black on light backgrounds */
+  variant?: keyof typeof LOGO;
   className?: string;
   showMark?: boolean;
   asLink?: boolean;
@@ -54,32 +24,25 @@ type BrandLogoProps = {
 
 export function BrandLogo({
   size = "sm",
+  variant = "white",
   className,
-  showMark = true,
   asLink = true,
 }: BrandLogoProps) {
   const s = sizes[size];
 
   const content = (
-    <>
-      {showMark ? <BrandMark className={s.mark} /> : null}
-      <span className="flex flex-col leading-none text-white">
-        <span className={cn("font-display font-bold tracking-tight", s.title)}>taz</span>
-        <span
-          className={cn(
-            "mt-0.5 font-semibold uppercase tracking-[0.28em] text-white/75",
-            s.subtitle
-          )}
-        >
-          investments
-        </span>
-      </span>
-    </>
+    <Image
+      src={LOGO[variant]}
+      alt="Taz Investment"
+      width={s.width}
+      height={s.height}
+      priority
+      className={cn(s.className, "object-contain object-left")}
+    />
   );
 
   const rootClass = cn(
     "inline-flex items-center transition-opacity hover:opacity-85",
-    s.gap,
     className
   );
 
