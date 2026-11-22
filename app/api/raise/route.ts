@@ -27,9 +27,10 @@ function isPdfFile(file: File) {
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.RAISE_TO_EMAIL;
-  const fromEmail = process.env.RAISE_FROM_EMAIL || "onboarding@resend.dev";
+  const fromEmail = process.env.RAISE_FROM_EMAIL;
 
-  if (!apiKey || !toEmail) {
+  // Do not hardcode env values here — Netlify secrets scan fails if env values appear in source.
+  if (!apiKey || !toEmail || !fromEmail) {
     return NextResponse.json(
       { error: "Email is not configured on the server." },
       { status: 500 },

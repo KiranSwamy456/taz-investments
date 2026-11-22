@@ -1,0 +1,4 @@
+[build.environment]
+  # Email addresses are not secrets; omit so Netlify does not fail when they appear in config/docs.
+  # Keep RESEND_API_KEY scanned (must never appear in the repo).
+  SECRETS_SCAN_OMIT_KEYS = "RAISE_FROM_EMAIL,RAISE_TO_EMAIL"
