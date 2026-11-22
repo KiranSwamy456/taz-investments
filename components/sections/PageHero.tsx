@@ -29,7 +29,7 @@ export function PageHero({
   secondaryCta,
 }: PageHeroProps) {
   return (
-    <section data-scroll-tone className="border-b border-border px-6 pb-16 pt-28 md:px-12 md:pb-20 md:pt-32">
+    <section data-scroll-tone className="border-b border-border px-6 pb-28 pt-28 md:px-12 md:pb-24 md:pt-32">
       <div className="mx-auto max-w-7xl">
         <span className="mb-6 block text-xs font-bold uppercase tracking-widest text-muted-foreground">
           {label}

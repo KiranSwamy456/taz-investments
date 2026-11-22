@@ -3,19 +3,10 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-type RaisePayload = {
-  name?: unknown;
-  email?: unknown;
-  company?: unknown;
-  stage?: unknown;
-  link?: unknown;
-  message?: unknown;
-  source?: unknown;
-};
-
 const EMAIL_RE = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+const MAX_PDF_BYTES = 5 * 1024 * 1024;
 
-function asString(value: unknown) {
+function asString(value: FormDataEntryValue | null) {
   return typeof value === "string" ? value.trim() : "";
 }
 
@@ -26,6 +17,11 @@ function escapeHtml(value: string) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function isPdfFile(file: File) {
+  const name = file.name.toLowerCase();
+  return file.type === "application/pdf" || name.endsWith(".pdf");
 }
 
 export async function POST(request: Request) {
@@ -40,20 +36,22 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: RaisePayload;
+  let form: FormData;
   try {
-    body = (await request.json()) as RaisePayload;
+    form = await request.formData();
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid form submission." }, { status: 400 });
   }
 
-  const name = asString(body.name);
-  const email = asString(body.email).toLowerCase();
-  const company = asString(body.company);
-  const stage = asString(body.stage);
-  const link = asString(body.link);
-  const message = asString(body.message);
-  const source = asString(body.source) || "Website raise form";
+  const name = asString(form.get("name"));
+  const email = asString(form.get("email")).toLowerCase();
+  const company = asString(form.get("company"));
+  const stage = asString(form.get("stage"));
+  const link = asString(form.get("link"));
+  const message = asString(form.get("message"));
+  const source = asString(form.get("source")) || "Website raise form";
+  const deckEntry = form.get("deck");
+  const deck = deckEntry instanceof File && deckEntry.size > 0 ? deckEntry : null;
 
   if (!name || !email || !company || !stage || !message) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
@@ -62,6 +60,25 @@ export async function POST(request: Request) {
   if (!EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
   }
+
+  if (deck) {
+    if (!isPdfFile(deck)) {
+      return NextResponse.json({ error: "Please upload a PDF file only." }, { status: 400 });
+    }
+    if (deck.size > MAX_PDF_BYTES) {
+      return NextResponse.json({ error: "PDF must be 5MB or smaller." }, { status: 400 });
+    }
+  }
+
+  const attachments = deck
+    ? [
+        {
+          filename: deck.name.replace(/[^\w.\- ()]/g, "_") || "pitch-deck.pdf",
+          content: Buffer.from(await deck.arrayBuffer()),
+          contentType: "application/pdf",
+        },
+      ]
+    : undefined;
 
   const resend = new Resend(apiKey);
   const subject = `New raise inquiry: ${company} (${stage})`;
@@ -72,6 +89,7 @@ export async function POST(request: Request) {
     to: [toEmail],
     replyTo: [`${safeName} <${email}>`],
     subject,
+    attachments,
     text: [
       `New raise inquiry from the website`,
       ``,
@@ -81,6 +99,7 @@ export async function POST(request: Request) {
       `Company: ${company}`,
       `Stage: ${stage}`,
       `Website / deck: ${link || "—"}`,
+      `PDF attached: ${deck ? deck.name : "No"}`,
       ``,
       `Message:`,
       message,
@@ -93,6 +112,7 @@ export async function POST(request: Request) {
       <p><strong>Company:</strong> ${escapeHtml(company)}</p>
       <p><strong>Stage:</strong> ${escapeHtml(stage)}</p>
       <p><strong>Website / deck:</strong> ${link ? escapeHtml(link) : "—"}</p>
+      <p><strong>PDF attached:</strong> ${deck ? escapeHtml(deck.name) : "No"}</p>
       <p><strong>Message:</strong></p>
       <p>${escapeHtml(message).replaceAll("\n", "<br />")}</p>
     `,

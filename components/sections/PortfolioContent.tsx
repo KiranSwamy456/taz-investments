@@ -29,7 +29,7 @@ function FilterChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-wider transition-colors md:text-xs",
+        "inline-flex min-h-11 items-center rounded-full border px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors",
         active
           ? "border-accent bg-accent/10 text-white"
           : "border-border text-muted-foreground hover:border-white/20 hover:text-white"
@@ -234,12 +234,12 @@ export function PortfolioContent() {
             )}
           </div>
 
-          <div className="mb-12 space-y-5 border border-border bg-card/50 p-5 md:p-6">
+          <div className="mb-12 space-y-6 border border-border bg-card/50 p-4 md:p-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-6">
-              <span className="w-16 shrink-0 pt-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              <span className="w-16 shrink-0 pt-2.5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Sector
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 <FilterChip active={sector === "all"} onClick={() => setSector("all")}>
                   All
                 </FilterChip>
@@ -251,10 +251,10 @@ export function PortfolioContent() {
               </div>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-6">
-              <span className="w-16 shrink-0 pt-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              <span className="w-16 shrink-0 pt-2.5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Stage
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 <FilterChip active={stage === "all"} onClick={() => setStage("all")}>
                   All
                 </FilterChip>

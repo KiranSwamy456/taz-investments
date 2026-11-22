@@ -11,9 +11,9 @@ export function SiteShell({
 }) {
   return (
     <>
-      <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-accent selection:text-accent-foreground">
+      <div className="min-h-screen scroll-pb-28 bg-background text-foreground overflow-x-hidden selection:bg-accent selection:text-accent-foreground md:scroll-pb-32">
         {showHeader ? <Header /> : null}
-        <main>{children}</main>
+        <main className="pb-24 md:pb-28">{children}</main>
         <Footer />
       </div>
       {/* Outside overflow-x-hidden so expanded rings are not clipped */}

@@ -4,11 +4,13 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight } from "lucide-react";
 
 const STAGES = ["Pre-seed", "Seed", "Series A", "Growth", "Other"] as const;
+const MAX_PDF_MB = 5;
 
 export function RaiseForm({ source }: { source?: string }) {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deckName, setDeckName] = useState<string | null>(null);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -17,20 +19,30 @@ export function RaiseForm({ source }: { source?: string }) {
 
     const form = e.currentTarget;
     const data = new FormData(form);
+    data.set("source", source || "Website raise form");
+
+    const file = data.get("deck");
+    if (file instanceof File && file.size > 0) {
+      const isPdf =
+        file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+      if (!isPdf) {
+        setError("Please upload a PDF file only.");
+        setSending(false);
+        return;
+      }
+      if (file.size > MAX_PDF_MB * 1024 * 1024) {
+        setError(`PDF must be ${MAX_PDF_MB}MB or smaller.`);
+        setSending(false);
+        return;
+      }
+    } else {
+      data.delete("deck");
+    }
 
     try {
       const res = await fetch("/api/raise", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(data.get("name") || ""),
-          email: String(data.get("email") || ""),
-          company: String(data.get("company") || ""),
-          stage: String(data.get("stage") || ""),
-          link: String(data.get("link") || ""),
-          message: String(data.get("message") || ""),
-          source: source || "Website raise form",
-        }),
+        body: data,
       });
 
       const payload = (await res.json().catch(() => ({}))) as { error?: string };
@@ -40,6 +52,7 @@ export function RaiseForm({ source }: { source?: string }) {
       }
 
       form.reset();
+      setDeckName(null);
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -140,6 +153,26 @@ export function RaiseForm({ source }: { source?: string }) {
           className="w-full rounded-xl border border-border bg-background px-4 py-3 text-white outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-accent"
           placeholder="https://"
         />
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-xs font-bold uppercase tracking-widest text-muted-foreground">
+          Pitch deck (PDF)
+        </span>
+        <input
+          name="deck"
+          type="file"
+          accept="application/pdf,.pdf"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            setDeckName(file ? file.name : null);
+          }}
+          className="block w-full cursor-pointer rounded-xl border border-border bg-background px-4 py-3 text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-widest file:text-accent-foreground hover:border-accent/60"
+        />
+        <span className="mt-2 block text-xs text-muted-foreground">
+          Optional · PDF only · max {MAX_PDF_MB}MB
+          {deckName ? ` · Selected: ${deckName}` : ""}
+        </span>
       </label>
 
       <label className="block">

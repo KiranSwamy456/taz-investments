@@ -82,8 +82,17 @@
     @apply border-border;
   }
 
+  html {
+    scroll-padding-bottom: 7.5rem;
+  }
+
   body {
     @apply font-sans antialiased bg-background text-foreground selection:bg-accent selection:text-accent-foreground;
+  }
+
+  /* Keep section headings clear of the fixed bottom ring nav while scrolling */
+  main > section[data-scroll-tone] {
+    scroll-margin-bottom: 6.5rem;
   }
 }
 
