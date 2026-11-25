@@ -25,16 +25,16 @@ const LOGO_ROWS = [
 
 export function ClientLogos() {
   return (
-    <section className="border-y border-border/50 px-6 py-24 md:px-12">
+    <section className="border-y border-border/50 px-6 py-16 sm:py-20 md:px-12 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col gap-y-12">
+        <div className="flex flex-col gap-y-8 sm:gap-y-10 md:gap-y-12">
           {LOGO_ROWS.map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className="flex flex-wrap items-center justify-between gap-8 opacity-60 grayscale transition-all duration-500 hover:grayscale-0"
+              className="flex flex-wrap items-center justify-center gap-x-6 gap-y-5 opacity-60 grayscale transition-all duration-500 hover:grayscale-0 sm:gap-x-8 md:justify-between lg:gap-x-10"
             >
               {row.map((logo) => (
-                <span key={logo.name} className={logo.className}>
+                <span key={logo.name} className={`${logo.className} text-base sm:text-lg md:text-xl`}>
                   {logo.name}
                 </span>
               ))}
