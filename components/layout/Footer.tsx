@@ -65,10 +65,10 @@ export function Footer() {
           </p>
           <div className="space-y-3 text-sm text-muted-foreground">
             <a
-              href="mailto:hello@tazinvestments.com"
+              href="mailto:pioneer@tazinvestment.com"
               className="block text-white/70 transition-colors hover:text-accent"
             >
-              hello@tazinvestments.com
+              pioneer@tazinvestment.com
             </a>
             <p>
               <Link href="/privacy" className="transition-colors hover:text-accent">

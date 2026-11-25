@@ -19,10 +19,10 @@ export default function ContactPage() {
           <div>
             <h2 className="font-display text-2xl font-medium text-white md:text-3xl">Investor relations</h2>
             <a
-              href="mailto:hello@tazinvestments.com"
+              href="mailto:pioneer@tazinvestment.com"
               className="mt-4 inline-block text-lg text-muted-foreground transition-colors hover:text-accent"
             >
-              hello@tazinvestments.com
+              pioneer@tazinvestment.com
             </a>
           </div>
           <div>
